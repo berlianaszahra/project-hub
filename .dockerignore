@@ -1,0 +1,14 @@
+.git
+.github
+node_modules
+.next
+coverage
+npm-debug.log*
+.env*
+.ssh
+*.pem
+*.key
+group[1-6]
+group[1-6].pub
+projecthub-bcc-ci*
+bcc-*-known-hosts
