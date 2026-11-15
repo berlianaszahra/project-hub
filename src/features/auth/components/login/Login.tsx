@@ -1,246 +1,315 @@
 
 "use client";
 
-import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-type LoginData = {
-  email: string;
-  password: string;
-};
+import {
+  loginSchema,
+  type LoginFormData,
+} from "../../schemas/login.schema";
 
 type LoginProps = {
-  onLogin?: (data: LoginData) => void | Promise<void>;
-  onGoogleLogin?: () => void | Promise<void>;
+  onLogin?: (
+    email: string,
+    password: string,
+  ) => Promise<void> | void;
+  onGoogleLogin?: () => Promise<void> | void;
 };
 
-function EyeIcon({ hidden }: { hidden: boolean }) {
-  return (
-    <Image
-      src={hidden ? "/images/open-eye.png" : "/images/close-eye.png"}
-      alt=""
-      width={18}
-      height={18}
-      className="h-[18px] w-[18px] object-contain"
-    />
-  );
-}
-
-function GoogleIcon() {
-  return (
-    <Image
-      src="/images/google-logo.png"
-      alt=""
-      width={18}
-      height={18}
-      className="h-[18px] w-[18px] object-contain"
-    />
-  );
-}
-
-export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Login({
+  onLogin,
+  onGoogleLogin,
+}: LoginProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setError("");
+  const {
+    register,
+    handleSubmit,
+    setError,
+    clearErrors,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: "onBlur",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const isLoading = isSubmitting || isGoogleLoading;
+
+  // Login menggunakan email dan password
+  const onSubmit = async (data: LoginFormData) => {
+    clearErrors("root");
 
     if (!onLogin) {
-      setError("Login belum terhubung ke layanan autentikasi.");
+      setError("root", {
+        message: "Layanan login belum terhubung.",
+      });
       return;
     }
 
     try {
-      setSubmitting(true);
-      await onLogin({ email: email.trim(), password });
-    } catch {
-      setError("Gagal masuk. Periksa kembali akun atau coba lagi.");
-    } finally {
-      setSubmitting(false);
+      await onLogin(data.email, data.password);
+    } catch (error) {
+      setError("root", {
+        message:
+          error instanceof Error
+            ? error.message
+            : "Login gagal. Silakan coba lagi.",
+      });
     }
-  }
+  };
 
-  async function handleGoogleLogin() {
-    setError("");
+  // Login menggunakan Google
+  const handleGoogleLogin = async () => {
+    clearErrors("root");
 
     if (!onGoogleLogin) {
-      setError("Login Google belum dikonfigurasi.");
+      setError("root", {
+        message: "Login Google belum terhubung.",
+      });
       return;
     }
 
     try {
-      setSubmitting(true);
+      setIsGoogleLoading(true);
       await onGoogleLogin();
-    } catch {
-      setError("Login Google gagal. Silakan coba lagi.");
+    } catch (error) {
+      setError("root", {
+        message:
+          error instanceof Error
+            ? error.message
+            : "Login Google gagal. Silakan coba lagi.",
+      });
     } finally {
-      setSubmitting(false);
+      setIsGoogleLoading(false);
     }
-  }
+  };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#FCF9F8] px-4 py-12 font-sans text-[#1C1B1B]">
-      <section
-        aria-label="Login ProjectHub"
-        className="w-full max-w-[400px]"
-      >
-        {/* BCC Logo */}
-        <div className="mb-6 flex justify-center">
-          <Image
-            src="/images/BCC horizontal.png"
-            alt="BCC ProjectHub"
-            width={180}
-            height={70}
-            className="h-auto w-[180px] object-contain"
-            priority
-          />
-        </div>
+    <main className="flex min-h-screen items-center justify-center bg-[#F6F8FB] px-4 py-10">
+      <div className="w-full max-w-[430px]">
+        <section className="rounded-2xl border border-[#E9EDF2] bg-white px-6 py-9 shadow-[0_8px_32px_rgba(15,23,42,0.04)] sm:px-9">
 
-        {/* Header */}
-        <header className="mb-8 text-center">
-          <h1 className="text-[22px] font-semibold leading-7 tracking-[-0.55px]">
-            Masuk ke ProjectHub
-          </h1>
-          <p className="mt-2 text-sm leading-[22px] text-[#717784]">
-            Masuk untuk melanjutkan ke workspace.
-          </p>
-        </header>
-
-        {/* Login Form */}
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label
-              htmlFor="login-email"
-              className="mb-1.5 block text-xs font-medium leading-4 tracking-[0.12px] text-[#414752]"
-            >
-              Email
-            </label>
-
-            <input
-              id="login-email"
-              type="email"
-              name="email"
-              autoComplete="email"
-              required
-              placeholder="berlian@bcc.id"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="h-11 w-full rounded-lg border border-[#E9E9E7] bg-white px-3 text-sm text-[#1C1B1B] outline-none placeholder:text-[#717784] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/15"
+          {/* Logo BCC */}
+          <div className="mb-8 flex flex-col items-center">
+            <Image
+              src="/images/BCC horizontal.png"
+              alt="BCC ProjectHub"
+              width={180}
+              height={70}
+              priority
+              className="mb-4 h-auto w-[180px] object-contain"
             />
+
+            <h1 className="text-[25px] font-semibold tracking-tight text-[#172033]">
+              Welcome Back
+            </h1>
+
+            <p className="mt-2 text-center text-sm text-[#7A8494]">
+              Sign in to your ProjectHub account
+            </p>
           </div>
 
-          {/* Password */}
-          <div className="mt-4">
-            <div className="mb-1.5 flex items-center justify-between gap-3">
+          {/* Login Form */}
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            className="space-y-5"
+          >
+            {/* Email */}
+            <div>
               <label
-                htmlFor="login-password"
-                className="text-xs font-medium leading-4 tracking-[0.12px] text-[#414752]"
+                htmlFor="email"
+                className="mb-2 block text-sm font-medium text-[#344054]"
               >
-                Password
+                Email Address
               </label>
 
-              <Link
-                href="/forgot-password"
-                className="text-[11px] leading-[14px] tracking-[0.22px] text-[#005DA9] hover:underline"
-              >
-                Lupa password?
-              </Link>
-            </div>
-
-            <div className="relative">
               <input
-                id="login-password"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                autoComplete="current-password"
-                required
-                placeholder="••••••••"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className="h-11 w-full rounded-lg border border-[#E9E9E7] bg-white py-2.5 pl-3 pr-11 text-sm text-[#1C1B1B] outline-none placeholder:text-[#717784] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/15"
+                id="email"
+                type="email"
+                autoComplete="email"
+                placeholder="Enter your email"
+                disabled={isLoading}
+                aria-invalid={!!errors.email}
+                aria-describedby={
+                  errors.email ? "email-error" : undefined
+                }
+                {...register("email")}
+                className={`h-11 w-full rounded-lg border bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
+                  errors.email
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
+                    : "border-[#DCE2E9] focus:border-[#005DA9] focus:ring-[#005DA9]/10"
+                }`}
               />
 
-              <button
-                type="button"
-                onClick={() => setShowPassword((current) => !current)}
-                aria-label={
-                  showPassword
-                    ? "Sembunyikan sandi"
-                    : "Tampilkan sandi"
-                }
-                aria-pressed={showPassword}
-                className="absolute right-2.5 top-2 flex h-7 w-7 items-center justify-center rounded text-[#717784] hover:bg-[#F6F3F2] focus-visible:outline-2 focus-visible:outline-[#005DA9]"
-              >
-                <EyeIcon hidden={showPassword} />
-              </button>
+              {errors.email && (
+                <p
+                  id="email-error"
+                  role="alert"
+                  className="mt-1.5 text-xs text-red-600"
+                >
+                  {errors.email.message}
+                </p>
+              )}
             </div>
+
+            {/* Password */}
+            <div>
+              <div className="mb-2 flex items-center justify-between">
+                <label
+                  htmlFor="password"
+                  className="text-sm font-medium text-[#344054]"
+                >
+                  Password
+                </label>
+
+                <Link
+                  href="/forgot-password"
+                  className="text-xs font-medium text-[#005DA9] hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  placeholder="Enter your password"
+                  disabled={isLoading}
+                  aria-invalid={!!errors.password}
+                  aria-describedby={
+                    errors.password
+                      ? "password-error"
+                      : undefined
+                  }
+                  {...register("password")}
+                  className={`h-11 w-full rounded-lg border bg-white px-3.5 pr-12 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
+                    errors.password
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
+                      : "border-[#DCE2E9] focus:border-[#005DA9] focus:ring-[#005DA9]/10"
+                  }`}
+                />
+
+                {/* Show / Hide Password */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowPassword((prev) => !prev)
+                  }
+                  aria-label={
+                    showPassword
+                      ? "Hide password"
+                      : "Show password"
+                  }
+                  aria-pressed={showPassword}
+                  disabled={isLoading}
+                  className="absolute inset-y-0 right-3 flex items-center justify-center disabled:opacity-60"
+                >
+                  <Image
+                    src={
+                      showPassword
+                        ? "/images/open-eye.png"
+                        : "/images/close-eye.png"
+                    }
+                    alt=""
+                    width={20}
+                    height={20}
+                    className="object-contain"
+                  />
+                </button>
+              </div>
+
+              {errors.password && (
+                <p
+                  id="password-error"
+                  role="alert"
+                  className="mt-1.5 text-xs text-red-600"
+                >
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            {/* API Error */}
+            {errors.root?.message && (
+              <p
+                role="alert"
+                className="rounded-lg bg-red-50 px-3 py-2.5 text-sm text-red-600"
+              >
+                {errors.root.message}
+              </p>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="flex h-11 w-full items-center justify-center rounded-lg bg-[#005DA9] text-sm font-semibold text-white transition hover:bg-[#004D8C] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isSubmitting ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="my-6 flex items-center gap-3">
+            <div className="h-px flex-1 bg-[#E9EDF2]" />
+
+            <span className="text-xs text-[#98A2B3]">
+              Or continue with
+            </span>
+
+            <div className="h-px flex-1 bg-[#E9EDF2]" />
           </div>
 
-          {/* Submit */}
+          {/* Google Login */}
           <button
-            type="submit"
-            disabled={submitting}
-            className="mt-6 flex h-11 w-full items-center justify-center rounded-lg bg-[#005DA9] text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#004D8D] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#005DA9] disabled:cursor-not-allowed disabled:opacity-60"
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={isLoading}
+            className="flex h-11 w-full items-center justify-center gap-3 rounded-lg border border-[#DCE2E9] bg-white text-sm font-medium text-[#344054] transition hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {submitting ? "Memproses..." : "Masuk"}
+            <Image
+              src="/images/google.png"
+              alt=""
+              width={20}
+              height={20}
+              className="object-contain"
+            />
+
+            {isGoogleLoading
+              ? "Connecting..."
+              : "Continue with Google"}
           </button>
 
-          {error && (
-            <p role="alert" className="mt-3 text-xs text-red-700">
-              {error}
-            </p>
-          )}
-        </form>
-
-        {/* Workspace Information */}
-        <p className="mt-4 flex items-center justify-center gap-1.5 text-[11px] leading-[14px] tracking-[0.22px] text-[#717784]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#0C6854]" />
-          Akses khusus anggota workspace BCC
-        </p>
-
-        {/* Separator */}
-        <div className="relative my-7 h-px bg-[#E5E2E1]">
-          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#FCF9F8] px-3 text-[11px] uppercase leading-[14px] tracking-[0.55px] text-[#717784]">
-            atau
-          </span>
-        </div>
-
-        {/* Google Login */}
-        <button
-          type="button"
-          onClick={handleGoogleLogin}
-          disabled={submitting}
-          className="flex h-11 w-full items-center justify-center gap-2.5 rounded-lg border border-[#E9E9E7] bg-white px-4 text-sm font-medium text-[#1C1B1B] transition-colors hover:bg-[#F9F8F7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#005DA9] disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <GoogleIcon />
-          Lanjutkan dengan Google
-        </button>
-
-        {/* Register Link */}
-        <p className="mt-8 text-center text-sm leading-[22px] text-[#717784]">
-          Belum punya akun?{" "}
-          <Link
-            href="/register"
-            className="font-medium text-[#005DA9] hover:underline"
-          >
-            Daftar
-          </Link>
-        </p>
+          {/* Register Link */}
+          <p className="mt-7 text-center text-sm text-[#7A8494]">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/register"
+              className="font-semibold text-[#005DA9] hover:underline"
+            >
+              Sign Up
+            </Link>
+          </p>
+        </section>
 
         {/* Footer */}
-        <footer className="mt-14 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 border-t border-[#E5E2E1] pt-4 text-[11px] leading-[14px] tracking-[0.22px] text-[#717784]">
-          <span>© BCC ProjectHub</span>
-          <span aria-hidden="true">·</span>
-          <span>Workspace internal</span>
-          <span aria-hidden="true">·</span>
-          <span>2026</span>
-        </footer>
-      </section>
+        <p className="mt-6 text-center text-xs text-[#98A2B3]">
+          © {new Date().getFullYear()} ProjectHub.
+          All rights reserved.
+        </p>
+      </div>
     </main>
   );
 }
