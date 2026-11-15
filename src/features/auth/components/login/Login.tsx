@@ -3,19 +3,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { getAuthErrorMessage, login } from "../../api/auth-client";
 import { type LoginFormData, loginSchema } from "../../schemas/login.schema";
 
-type LoginProps = {
-  onLogin?: (email: string, password: string) => Promise<void> | void;
-  onGoogleLogin?: () => Promise<void> | void;
-};
-
-export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
+export default function Login() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const {
     register,
@@ -32,54 +29,16 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
     },
   });
 
-  const isLoading = isSubmitting || isGoogleLoading;
-
-  // Login menggunakan email dan password
   const onSubmit = async (data: LoginFormData) => {
     clearErrors("root");
 
-    if (!onLogin) {
-      setError("root", {
-        message: "Layanan login belum terhubung.",
-      });
-      return;
-    }
-
     try {
-      await onLogin(data.email, data.password);
+      await login(data);
+      router.replace("/katalog");
     } catch (error) {
       setError("root", {
-        message:
-          error instanceof Error
-            ? error.message
-            : "Login gagal. Silakan coba lagi.",
+        message: getAuthErrorMessage(error, "Login gagal. Silakan coba lagi."),
       });
-    }
-  };
-
-  // Login menggunakan Google
-  const handleGoogleLogin = async () => {
-    clearErrors("root");
-
-    if (!onGoogleLogin) {
-      setError("root", {
-        message: "Login Google belum terhubung.",
-      });
-      return;
-    }
-
-    try {
-      setIsGoogleLoading(true);
-      await onGoogleLogin();
-    } catch (error) {
-      setError("root", {
-        message:
-          error instanceof Error
-            ? error.message
-            : "Login Google gagal. Silakan coba lagi.",
-      });
-    } finally {
-      setIsGoogleLoading(false);
     }
   };
 
@@ -127,14 +86,15 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
                 type="email"
                 autoComplete="email"
                 placeholder="Enter your email"
-                disabled={isLoading}
+                disabled={isSubmitting}
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
                 {...register("email")}
-                className={`h-11 w-full rounded-lg border bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${errors.email
+                className={`h-11 w-full rounded-lg border bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
+                  errors.email
                     ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
                     : "border-[#DCE2E9] focus:border-[#005DA9] focus:ring-[#005DA9]/10"
-                  }`}
+                }`}
               />
 
               {errors.email && (
@@ -172,16 +132,17 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   placeholder="Enter your password"
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                   aria-invalid={!!errors.password}
                   aria-describedby={
                     errors.password ? "password-error" : undefined
                   }
                   {...register("password")}
-                  className={`h-11 w-full rounded-lg border bg-white px-3.5 pr-12 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${errors.password
+                  className={`h-11 w-full rounded-lg border bg-white px-3.5 pr-12 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
+                    errors.password
                       ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
                       : "border-[#DCE2E9] focus:border-[#005DA9] focus:ring-[#005DA9]/10"
-                    }`}
+                  }`}
                 />
 
                 {/* Show / Hide Password */}
@@ -190,7 +151,7 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
                   onClick={() => setShowPassword((prev) => !prev)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   aria-pressed={showPassword}
-                  disabled={isLoading}
+                  disabled={isSubmitting}
                   className="absolute inset-y-0 right-3 flex items-center justify-center disabled:opacity-60"
                 >
                   <Image
@@ -231,39 +192,12 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isSubmitting}
               className="flex h-11 w-full items-center justify-center rounded-lg bg-[#005DA9] text-sm font-semibold text-white transition hover:bg-[#004D8C] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? "Signing in..." : "Sign In"}
             </button>
           </form>
-
-          {/* Divider */}
-          <div className="my-6 flex items-center gap-3">
-            <div className="h-px flex-1 bg-[#E9EDF2]" />
-
-            <span className="text-xs text-[#98A2B3]">Or continue with</span>
-
-            <div className="h-px flex-1 bg-[#E9EDF2]" />
-          </div>
-
-          {/* Google Login */}
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            disabled={isLoading}
-            className="flex h-11 w-full items-center justify-center gap-3 rounded-lg border border-[#DCE2E9] bg-white text-sm font-medium text-[#344054] transition hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <Image
-              src="/images/google-logo.png"
-              alt=""
-              width={20}
-              height={20}
-              className="object-contain"
-            />
-
-            {isGoogleLoading ? "Connecting..." : "Continue with Google"}
-          </button>
 
           {/* Register Link */}
           <p className="mt-7 text-center text-sm text-[#7A8494]">

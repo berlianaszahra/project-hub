@@ -4,23 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { type FormEvent, useState } from "react";
 
-type RegisterData = {
-  fullName: string;
-  email: string;
-  password: string;
-};
+import { getAuthErrorMessage, registerAccount } from "../../api/auth-client";
+import { registerSchema } from "../../schemas/register.schema";
 
-type RegisterProps = {
-  onRegister?: (data: RegisterData) => Promise<void> | void;
-  loginHref?: string;
-  logoSrc?: string;
-};
-
-export default function Register({
-  onRegister,
-  loginHref = "/login",
-  logoSrc = "/images/BCC horizontal.png",
-}: RegisterProps) {
+export default function Register() {
+  const loginHref = "/login";
+  const logoSrc = "/images/BCC horizontal.png";
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,37 +23,23 @@ export default function Register({
     setError("");
     setSuccess(false);
 
-    if (!fullName.trim() || !email.trim() || !password) {
-      setError("Semua kolom wajib diisi.");
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Password harus terdiri dari minimal 8 karakter.");
-      return;
-    }
-
-    if (!onRegister) {
-      setError("Layanan registrasi belum terhubung.");
+    const input = registerSchema.safeParse({ name: fullName, email, password });
+    if (!input.success) {
+      setError(
+        input.error.issues[0]?.message ?? "Periksa kembali data registrasi.",
+      );
       return;
     }
 
     try {
       setIsLoading(true);
-
-      await onRegister({
-        fullName: fullName.trim(),
-        email: email.trim(),
-        password,
-      });
+      await registerAccount(input.data);
 
       setSuccess(true);
       setPassword("");
     } catch (err) {
       setError(
-        err instanceof Error
-          ? err.message
-          : "Registrasi gagal. Silakan coba lagi.",
+        getAuthErrorMessage(err, "Registrasi gagal. Silakan coba lagi."),
       );
     } finally {
       setIsLoading(false);

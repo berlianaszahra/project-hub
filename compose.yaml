@@ -2,6 +2,8 @@ services:
   frontend:
     image: ${APP_IMAGE:-projecthub-frontend:local}
     restart: unless-stopped
+    environment:
+      API_BASE_URL: ${API_BASE_URL:-https://group1-be.bccdev.id/api/v1}
 
     ports:
       - "80:3000"

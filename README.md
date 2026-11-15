@@ -20,6 +20,21 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Login dan registrasi
+
+Secara lokal, jalankan backend di `http://localhost:8080`, atau atur
+`API_BASE_URL` di `.env.local` sebelum menjalankan `npm run dev`:
+
+```dotenv
+API_BASE_URL=https://group1-be.bccdev.id/api/v1
+```
+
+Sertakan akhiran `/api/v1` dalam `API_BASE_URL`. Di VM BCC Group 1,
+`compose.yaml` memakai domain backend itu sebagai nilai bawaan. Frontend
+meneruskan login dan registrasi ke backend lewat route Next.js
+`/api/auth/login` dan `/api/auth/register`. Token login disimpan dalam cookie
+`HttpOnly`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
