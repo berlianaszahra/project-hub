@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -160,9 +159,7 @@ export default function Register({
                   Password
                 </label>
 
-                <span className="text-xs text-[#98A2B3]">
-                  Min. 8 karakter
-                </span>
+                <span className="text-xs text-[#98A2B3]">Min. 8 karakter</span>
               </div>
 
               <div className="relative">
@@ -185,9 +182,7 @@ export default function Register({
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   aria-label={
-                    showPassword
-                      ? "Sembunyikan password"
-                      : "Tampilkan password"
+                    showPassword ? "Sembunyikan password" : "Tampilkan password"
                   }
                   aria-pressed={showPassword}
                   className="absolute inset-y-0 right-3 flex items-center justify-center"
@@ -208,8 +203,8 @@ export default function Register({
 
               {/* Password Hint */}
               <p className="mt-2 text-xs leading-5 text-[#7A8494]">
-                Gunakan password minimal 8 karakter untuk menjaga
-                keamanan akun Anda.
+                Gunakan password minimal 8 karakter untuk menjaga keamanan akun
+                Anda.
               </p>
             </div>
 
@@ -254,8 +249,6 @@ export default function Register({
             </Link>
           </p>
         </section>
-
-        
       </div>
     </main>
   );

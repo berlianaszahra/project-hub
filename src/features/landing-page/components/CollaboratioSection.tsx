@@ -1,10 +1,5 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Compass,
-  PanelsTopLeft,
-  UsersRound,
-} from "lucide-react";
+import { ArrowRight, Compass, PanelsTopLeft, UsersRound } from "lucide-react";
 
 const collaborationItems = [
   {
@@ -56,8 +51,8 @@ export default function CollaborationSection() {
           </h2>
 
           <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-text-secondary sm:text-base">
-            Tempat ide bertemu orang yang tepat. Tanpa birokrasi rumit,
-            fokus langsung pada karya nyata.
+            Tempat ide bertemu orang yang tepat. Tanpa birokrasi rumit, fokus
+            langsung pada karya nyata.
           </p>
         </header>
 

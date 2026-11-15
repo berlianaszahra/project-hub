@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { Quote } from "lucide-react";
 
-
-
 export default function TestimonialSection() {
   return (
     <section
@@ -19,10 +17,11 @@ export default function TestimonialSection() {
 
         <blockquote className="mt-6">
           <p className="text-balance text-2xl leading-snug font-semibold tracking-wider text-text-primary sm:text-3xl lg:text-[2rem]">
-            “ProjectHub bukan sekadar tempat mengelola proyek, tetapi ruang di mana ide berkembang, kolaborasi menjadi lebih mudah, dan setiap anggota tim dapat berkontribusi secara maksimal."
+            “ProjectHub bukan sekadar tempat mengelola proyek, tetapi ruang di
+            mana ide berkembang, kolaborasi menjadi lebih mudah, dan setiap
+            anggota tim dapat berkontribusi secara maksimal."
           </p>
         </blockquote>
-
       </figure>
     </section>
   );

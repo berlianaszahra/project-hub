@@ -43,7 +43,8 @@ const applicants = [
   {
     name: "Siti Nurhaliza",
     initials: "SN",
-    description: "Melamar posisi: Product Designer · Portofolio Behance disertakan",
+    description:
+      "Melamar posisi: Product Designer · Portofolio Behance disertakan",
     avatarClass: "bg-avatar-gold text-avatar-gold-text",
   },
 ];
@@ -171,10 +172,9 @@ export default function FeaturesSection() {
             </h2>
 
             <p className="mt-4 text-sm leading-7 text-text-secondary sm:text-base">
-              Setiap inisiatif dilengkapi dengan ringkasan arsitektur
-              teknis, target peluncuran, dan kejelasan ekspektasi
-              kontribusi. Tak ada lagi project menggantung tanpa
-              kejelasan arah.
+              Setiap inisiatif dilengkapi dengan ringkasan arsitektur teknis,
+              target peluncuran, dan kejelasan ekspektasi kontribusi. Tak ada
+              lagi project menggantung tanpa kejelasan arah.
             </p>
 
             <ul className="mt-6 space-y-3">
@@ -213,9 +213,9 @@ export default function FeaturesSection() {
             </h2>
 
             <p className="mt-4 text-sm leading-7 text-text-secondary sm:text-base">
-              Project Lead dapat memeriksa profil kandidat, melihat
-              portofolio relevan, dan menyetujui kolaborator hanya dalam
-              satu klik dengan pemberitahuan otomatis.
+              Project Lead dapat memeriksa profil kandidat, melihat portofolio
+              relevan, dan menyetujui kolaborator hanya dalam satu klik dengan
+              pemberitahuan otomatis.
             </p>
 
             <div className="mt-5 flex items-start gap-2 rounded-lg bg-white px-3 py-3">

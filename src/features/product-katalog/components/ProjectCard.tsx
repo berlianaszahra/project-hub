@@ -1,4 +1,3 @@
-
 import type { Project } from "../types/project";
 
 type ProjectCardProps = {
@@ -13,10 +12,7 @@ const statusClass: Record<Project["status"], string> = {
   Diarsipkan: "bg-[#EAE7E7] text-[#414752]",
 };
 
-export default function ProjectCard({
-  project,
-  onOpen,
-}: ProjectCardProps) {
+export default function ProjectCard({ project, onOpen }: ProjectCardProps) {
   const formattedDate = new Intl.DateTimeFormat("id-ID", {
     day: "numeric",
     month: "short",
@@ -26,13 +22,10 @@ export default function ProjectCard({
 
   return (
     <article className="flex min-h-[303px] flex-col justify-between rounded-xl border border-[#EAE7E7] bg-white p-6 transition-shadow hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
-
       {/* Project Information */}
       <div>
-
         {/* Icon and Status */}
         <div className="flex items-start justify-between gap-2">
-
           {/* Project Initial */}
           <div
             aria-hidden="true"
@@ -75,10 +68,8 @@ export default function ProjectCard({
 
       {/* Footer */}
       <div className="mt-6 border-t border-[#EAE7E7] pt-4">
-
         {/* Owner and Members */}
         <div className="flex items-center justify-between gap-2 text-xs">
-
           {/* Owner */}
           <span className="inline-flex items-center gap-2 text-[#1C1B1B]">
             <span className="flex size-5 items-center justify-center rounded-full bg-[#D4E3FF] text-[10px] font-semibold text-[#001C39]">
@@ -89,17 +80,12 @@ export default function ProjectCard({
           </span>
 
           {/* Member Count */}
-          <span className="text-[#0C6854]">
-            {project.memberCount} anggota
-          </span>
+          <span className="text-[#0C6854]">{project.memberCount} anggota</span>
         </div>
 
         {/* Updated Date and Detail */}
         <div className="mt-2 flex items-center justify-between gap-2 text-[11px]">
-
-          <span className="text-[#414752]">
-            Diperbarui {formattedDate}
-          </span>
+          <span className="text-[#414752]">Diperbarui {formattedDate}</span>
 
           {onOpen ? (
             <button
@@ -110,9 +96,7 @@ export default function ProjectCard({
               Lihat Detail →
             </button>
           ) : (
-            <span className="text-[#717784]">
-              Detail belum tersedia
-            </span>
+            <span className="text-[#717784]">Detail belum tersedia</span>
           )}
         </div>
       </div>

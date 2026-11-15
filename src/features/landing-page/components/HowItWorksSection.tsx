@@ -52,10 +52,7 @@ export default function HowItWorksSection() {
           className="mt-10 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
         >
           {steps.map((step, index) => (
-            <li
-              key={step.title}
-              className="rounded-xl bg-secondary-bg p-6"
-            >
+            <li key={step.title} className="rounded-xl bg-secondary-bg p-6">
               <span
                 aria-hidden="true"
                 className="block text-4xl leading-none font-bold tracking-tight text-text-secondary/25 sm:text-5xl"
