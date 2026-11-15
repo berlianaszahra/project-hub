@@ -2,8 +2,19 @@
 
 import { ArrowLeft, ExternalLink, Menu, ShieldCheck } from "lucide-react";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { positionDefaults } from "@/features/project-positions/lib/positions";
 import {
+  type RecruitmentPosition,
+  recruitmentPositionSchema,
+} from "@/features/project-positions/schemas/position.schema";
+import { applySelectionDecision } from "@/features/project-selection/lib/selection";
+import {
+  type SelectionDecision,
+  selectionSnapshotSchema,
+} from "@/features/project-selection/schemas/selection.schema";
+import {
+  type LeadWorkspace,
   type Workspace,
   type WorkspaceTab,
   workspaceTabs,
@@ -14,12 +25,80 @@ import ProjectMembersPage from "./ProjectMembersPage";
 import WorkspaceLeadTabs from "./WorkspaceLeadTabs";
 import WorkspaceSidebar from "./WorkspaceSidebar";
 export default function ProjectWorkspace({
-  workspace,
+  workspace: initialWorkspace,
   tab,
 }: {
   workspace: Workspace;
   tab: WorkspaceTab;
 }) {
+  const [workspace, setWorkspace] = useState(initialWorkspace);
+  const workspaceRef = useRef(initialWorkspace);
+  useEffect(() => {
+    let next = initialWorkspace;
+    try {
+      const raw = localStorage.getItem(
+        `projecthub:positions:${initialWorkspace.id}`,
+      );
+      if (raw) {
+        const parsed = recruitmentPositionSchema
+          .array()
+          .safeParse(JSON.parse(raw));
+        if (parsed.success) next = { ...next, positions: parsed.data };
+      }
+      if (next.role === "Project Lead") {
+        const snapshot = localStorage.getItem(
+          `projecthub:selection:${next.id}`,
+        );
+        if (snapshot) {
+          const parsed = selectionSnapshotSchema.safeParse(
+            JSON.parse(snapshot),
+          );
+          if (parsed.success) next = { ...next, ...parsed.data };
+        }
+      }
+    } catch {
+      /* Retain valid demo data when browser storage is unavailable. */
+    }
+    workspaceRef.current = next;
+    setWorkspace(next);
+  }, [initialWorkspace]);
+  function persistLead(next: LeadWorkspace) {
+    const snapshot = selectionSnapshotSchema.parse({
+      positions: next.positions.map(positionDefaults),
+      members: next.members,
+      applicants: next.applicants,
+    });
+    try {
+      localStorage.setItem(
+        `projecthub:selection:${next.id}`,
+        JSON.stringify(snapshot),
+      );
+    } catch {
+      throw new Error(
+        "Penyimpanan perangkat tidak tersedia. Perubahan belum disimpan.",
+      );
+    }
+    const updated = { ...next, ...snapshot };
+    workspaceRef.current = updated;
+    setWorkspace(updated);
+  }
+  function savePositions(positions: RecruitmentPosition[]) {
+    const current = workspaceRef.current;
+    if (current.role !== "Project Lead")
+      throw new Error("Hanya Project Lead yang dapat mengelola posisi.");
+    persistLead({
+      ...current,
+      positions: recruitmentPositionSchema.array().parse(positions),
+    });
+  }
+  function selectApplicant(decision: SelectionDecision) {
+    const next = applySelectionDecision(
+      workspaceRef.current,
+      decision,
+      new Date().toISOString().slice(0, 10),
+    );
+    persistLead(next);
+  }
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notice, setNotice] = useState("");
   const dialog = useRef<HTMLDialogElement>(null);
@@ -100,7 +179,12 @@ export default function ProjectWorkspace({
           ) : tab === "anggota" ? (
             <ProjectMembersPage workspace={workspace} />
           ) : workspace.role === "Project Lead" ? (
-            <WorkspaceLeadTabs workspace={workspace} tab={tab} />
+            <WorkspaceLeadTabs
+              workspace={workspace}
+              tab={tab}
+              onPositionsChange={savePositions}
+              onSelectionDecision={selectApplicant}
+            />
           ) : null}
         </div>
       </main>

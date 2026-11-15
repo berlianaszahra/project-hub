@@ -72,6 +72,10 @@ export const workspaces: Workspace[] = [
     applicants: [
       {
         id: "bagas",
+        email: "bagas@bcc.id",
+        submittedAt: "2026-11-15",
+        affiliation: "Mahasiswa BCC",
+        portfolio: "https://github.com/bagas/campus-feed",
         name: "Bagas Pratama",
         position: "UI/UX Designer",
         status: "Submitted",
@@ -81,6 +85,10 @@ export const workspaces: Workspace[] = [
       },
       {
         id: "citra",
+        email: "citra@bcc.id",
+        submittedAt: "2026-11-14",
+        affiliation: "Mahasiswa BCC",
+        portfolio: "https://github.com/citra/portfolio",
         name: "Citra Lestari",
         position: "Frontend Developer",
         status: "Reviewing",
@@ -90,6 +98,10 @@ export const workspaces: Workspace[] = [
       },
       {
         id: "andi",
+        email: "andi@bcc.id",
+        submittedAt: "2026-11-13",
+        affiliation: "Mahasiswa BCC",
+        portfolio: "",
         name: "Andi Saputra",
         position: "Frontend Developer",
         status: "Submitted",
@@ -99,6 +111,10 @@ export const workspaces: Workspace[] = [
       },
       {
         id: "salsa",
+        email: "salsa@bcc.id",
+        submittedAt: "2026-11-12",
+        affiliation: "Mahasiswa BCC",
+        portfolio: "https://www.behance.net/",
         name: "Salsa Putri",
         position: "UI/UX Designer",
         status: "Submitted",

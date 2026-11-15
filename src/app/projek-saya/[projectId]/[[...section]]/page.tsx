@@ -28,5 +28,7 @@ export default async function WorkspacePage({
     (tab) => tab.id === (section[0] ?? "ringkasan"),
   );
   if (!tab || (tab.leadOnly && workspace.role !== "Project Lead")) notFound();
-  return <ProjectWorkspace workspace={workspace} tab={tab.id} />;
+  return (
+    <ProjectWorkspace key={workspace.id} workspace={workspace} tab={tab.id} />
+  );
 }

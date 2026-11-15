@@ -35,16 +35,30 @@ type BaseWorkspace = {
   positions: WorkspacePosition[];
   links: { label: string; url: string }[];
 };
+export type SelectionStatus =
+  | "Submitted"
+  | "Reviewing"
+  | "Accepted"
+  | "Rejected"
+  | "Cancelled";
+export type WorkspaceApplicant = {
+  id: string;
+  userId?: string;
+  name: string;
+  position: string;
+  status: SelectionStatus;
+  skills: string[];
+  motivation: string;
+  email?: string;
+  affiliation?: string;
+  submittedAt?: string;
+  portfolio?: string;
+  portfolioLabel?: string;
+  note?: string;
+};
 export type LeadWorkspace = BaseWorkspace & {
   role: "Project Lead";
-  applicants: {
-    id: string;
-    name: string;
-    position: string;
-    status: "Submitted" | "Reviewing";
-    skills: string[];
-    motivation: string;
-  }[];
+  applicants: WorkspaceApplicant[];
 };
 export type MemberWorkspace = BaseWorkspace & { role: "Member" };
 export type Workspace = LeadWorkspace | MemberWorkspace;

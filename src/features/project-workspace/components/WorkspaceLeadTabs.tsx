@@ -1,161 +1,43 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useMemo } from "react";
+import ProjectPositionsPage from "@/features/project-positions/components/ProjectPositionsPage";
+import type { RecruitmentPosition } from "@/features/project-positions/schemas/position.schema";
+import ProjectSelectionPage from "@/features/project-selection/components/ProjectSelectionPage";
+import { isPending } from "@/features/project-selection/lib/selection";
+import type { SelectionDecision } from "@/features/project-selection/schemas/selection.schema";
 import ProjectSettingsPage from "@/features/project-settings/components/ProjectSettingsPage";
 import { settingsFromWorkspace } from "@/features/project-settings/data/workspaceSettings";
 import type { LeadWorkspace, WorkspaceTab } from "../types/workspace";
+
 export default function WorkspaceLeadTabs({
   workspace: w,
   tab,
+  onPositionsChange,
+  onSelectionDecision,
 }: {
   workspace: LeadWorkspace;
   tab: WorkspaceTab;
+  onPositionsChange: (positions: RecruitmentPosition[]) => void;
+  onSelectionDecision: (decision: SelectionDecision) => void;
 }) {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("all");
   const settingsProject = useMemo(() => settingsFromWorkspace(w), [w]);
-  const [selected, setSelected] = useState<string | null>(null);
-  const applicant = w.applicants.find((a) => a.id === selected);
   if (tab === "posisi")
-    return (
-      <>
-        <h1 className="text-2xl font-semibold">Posisi & Kebutuhan Tim</h1>
-        <p className="mt-2 text-sm text-[#717784]">
-          Kuota dihitung dari anggota aktif yang menempati posisi.
-        </p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {w.positions.map((p) => (
-            <article key={p.id} className="rounded-xl bg-white p-5">
-              <h2 className="font-semibold">{p.name}</h2>
-              <p className="mt-2 text-sm text-[#717784]">
-                {p.filled} / {p.capacity} terisi · {p.capacity - p.filled} slot
-                tersedia
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {p.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded bg-[#F6F3F2] px-2 py-1 text-xs"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
-        <p className="mt-5 text-xs text-[#717784]">
-          Pengelolaan posisi akan tersedia setelah layanan backend terhubung.
-        </p>
-      </>
-    );
+    return <ProjectPositionsPage workspace={w} onChange={onPositionsChange} />;
   if (tab === "pengaturan")
     return (
       <Suspense fallback={<output>Memuat pengaturan proyek…</output>}>
         <ProjectSettingsPage
           key={w.id}
           projectId={w.id}
-          pendingApplicationCount={w.applicants.length}
+          pendingApplicationCount={
+            w.applicants.filter((a) => isPending(a.status)).length
+          }
           project={settingsProject}
         />
       </Suspense>
     );
-  const filtered = w.applicants.filter(
-    (a) =>
-      a.name.toLowerCase().includes(search.toLowerCase()) &&
-      (filter === "all" || a.status === filter),
-  );
   return (
-    <>
-      <h1 className="text-2xl font-semibold">Seleksi Pengajuan</h1>
-      <p className="mt-2 text-sm text-[#717784]">
-        Tinjau kemampuan dan motivasi pelamar untuk posisi di {w.name}.
-      </p>
-      <div className="mt-6 flex flex-wrap gap-3">
-        <input
-          aria-label="Cari nama pelamar"
-          type="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Cari nama pelamar..."
-          className="rounded-lg border border-[#EAE7E7] bg-white p-3 text-sm"
-        />
-        <select
-          aria-label="Filter status pengajuan"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="rounded-lg border border-[#EAE7E7] bg-white p-3 text-sm"
-        >
-          <option value="all">Semua Status</option>
-          <option value="Submitted">Dikirim</option>
-          <option value="Reviewing">Sedang Ditinjau</option>
-        </select>
-      </div>
-      <div className="mt-5 overflow-x-auto rounded-xl bg-white">
-        <table className="w-full text-left text-sm">
-          <thead className="border-b border-[#EAE7E7] text-xs text-[#717784]">
-            <tr>
-              {["Pelamar", "Posisi", "Status", "Tindakan"].map((h) => (
-                <th key={h} className="p-4 font-medium">
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((a) => (
-              <tr id={a.id} key={a.id} className="border-b border-[#F6F3F2]">
-                <td className="p-4">{a.name}</td>
-                <td className="p-4">{a.position}</td>
-                <td className="p-4">
-                  <span className="rounded bg-[#FCDEA0] px-2 py-1 text-[11px]">
-                    {a.status === "Submitted" ? "Dikirim" : "Sedang Ditinjau"}
-                  </span>
-                </td>
-                <td className="p-4">
-                  <button
-                    type="button"
-                    onClick={() => setSelected(a.id)}
-                    className="text-xs text-[#005DA9] hover:underline"
-                  >
-                    Tinjau Berkas
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {!filtered.length && (
-          <p className="p-6 text-center text-sm text-[#717784]">
-            Tidak ada pelamar yang sesuai.
-          </p>
-        )}
-      </div>
-      {applicant && (
-        <section
-          aria-label={`Berkas ${applicant.name}`}
-          className="mt-5 rounded-xl bg-white p-6"
-        >
-          <div className="flex justify-between gap-2">
-            <h2 className="font-semibold">{applicant.name}</h2>
-            <button
-              type="button"
-              onClick={() => setSelected(null)}
-              className="text-xs text-[#717784]"
-            >
-              Tutup Detail
-            </button>
-          </div>
-          <p className="mt-2 text-xs text-[#005DA9]">{applicant.position}</p>
-          <p className="mt-4 text-sm">{applicant.motivation}</p>
-          <p className="mt-3 text-xs text-[#717784]">
-            Keahlian: {applicant.skills.join(", ")}
-          </p>
-          <p className="mt-5 rounded bg-[#F6F3F2] p-3 text-xs text-[#717784]">
-            Tindakan seleksi akan tersedia setelah layanan backend terhubung.
-          </p>
-        </section>
-      )}
-    </>
+    <ProjectSelectionPage workspace={w} onDecision={onSelectionDecision} />
   );
 }

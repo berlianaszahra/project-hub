@@ -15,6 +15,9 @@ export default function LeadOverview({
 }: {
   workspace: LeadWorkspace;
 }) {
+  const pending = w.applicants.filter(
+    (a) => a.status === "Submitted" || a.status === "Reviewing",
+  );
   const capacity = w.positions.reduce((sum, p) => sum + p.capacity, 0) + 1;
   const open = w.positions.filter((p) => p.filled < p.capacity);
   const occupancy = Math.round((w.members.length / capacity) * 100);
@@ -51,7 +54,7 @@ export default function LeadOverview({
             MENUNGGU SELEKSI
           </p>
           <p className="mt-2 text-3xl font-semibold">
-            {w.applicants.length}
+            {pending.length}
             <span className="ml-2 text-xs font-normal text-[#555965]">
               Berkas
             </span>
@@ -144,7 +147,7 @@ export default function LeadOverview({
               </div>
             </div>
             <div className="space-y-2">
-              {w.applicants.slice(0, 2).map((a) => (
+              {pending.slice(0, 2).map((a) => (
                 <div
                   key={a.id}
                   className="flex flex-wrap items-center gap-3 rounded-lg bg-[#FAF8F7] p-3"
@@ -175,7 +178,7 @@ export default function LeadOverview({
               href={workspaceHref(w.id, "pengajuan")}
               className="mt-5 block text-right text-xs font-medium text-[#005DA9]"
             >
-              Lihat Semua Pengajuan ({w.applicants.length} berkas) →
+              Lihat Semua Pengajuan ({pending.length} berkas) →
             </Link>
           </section>
           <section className="rounded-xl border border-[#F0EEEE] bg-white p-5">
