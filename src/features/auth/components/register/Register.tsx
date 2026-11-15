@@ -3,16 +3,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-type RegisterData = {
-  fullName: string;
-  email: string;
-  password: string;
-};
+import {
+  registerSchema,
+  type RegisterFormData,
+} from "../schemas/register.schema";
 
 type RegisterProps = {
-  onRegister?: (data: RegisterData) => Promise<void> | void;
+  onRegister?: (
+    data: RegisterFormData,
+  ) => Promise<void> | void;
   loginHref?: string;
   logoSrc?: string;
 };
@@ -22,53 +25,50 @@ export default function Register({
   loginHref = "/login",
   logoSrc = "/images/BCC horizontal.png",
 }: RegisterProps) {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setError("");
+  const {
+    register,
+    handleSubmit,
+    setError,
+    clearErrors,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    mode: "onBlur",
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  // Handle Register
+  const onSubmit = async (data: RegisterFormData) => {
+    clearErrors("root");
     setSuccess(false);
 
-    if (!fullName.trim() || !email.trim() || !password) {
-      setError("Semua kolom wajib diisi.");
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Password harus terdiri dari minimal 8 karakter.");
-      return;
-    }
-
     if (!onRegister) {
-      setError("Layanan registrasi belum terhubung.");
+      setError("root", {
+        message: "Layanan registrasi belum terhubung.",
+      });
       return;
     }
 
     try {
-      setIsLoading(true);
-
-      await onRegister({
-        fullName: fullName.trim(),
-        email: email.trim(),
-        password,
-      });
+      await onRegister(data);
 
       setSuccess(true);
-      setPassword("");
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Registrasi gagal. Silakan coba lagi.",
-      );
-    } finally {
-      setIsLoading(false);
+      reset();
+    } catch (error) {
+      setError("root", {
+        message:
+          error instanceof Error
+            ? error.message
+            : "Registrasi gagal. Silakan coba lagi.",
+      });
     }
   };
 
@@ -83,7 +83,7 @@ export default function Register({
           <div className="mb-8 flex flex-col items-center">
             <Image
               src={logoSrc}
-              alt="BCC Logo"
+              alt="BCC ProjectHub"
               width={180}
               height={70}
               priority
@@ -103,7 +103,11 @@ export default function Register({
           </div>
 
           {/* Register Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate
+            className="space-y-5"
+          >
             {/* Nama Lengkap */}
             <div>
               <label
@@ -115,16 +119,33 @@ export default function Register({
 
               <input
                 id="fullName"
-                name="fullName"
                 type="text"
                 autoComplete="name"
                 placeholder="Masukkan nama lengkap"
-                value={fullName}
-                onChange={(event) => setFullName(event.target.value)}
-                required
-                disabled={isLoading}
-                className="h-11 w-full rounded-lg border border-[#DCE2E9] bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/10 disabled:opacity-60"
+                disabled={isSubmitting || success}
+                aria-invalid={!!errors.fullName}
+                aria-describedby={
+                  errors.fullName
+                    ? "fullName-error"
+                    : undefined
+                }
+                {...register("fullName")}
+                className={`h-11 w-full rounded-lg border bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
+                  errors.fullName
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
+                    : "border-[#DCE2E9] focus:border-[#005DA9] focus:ring-[#005DA9]/10"
+                }`}
               />
+
+              {errors.fullName && (
+                <p
+                  id="fullName-error"
+                  role="alert"
+                  className="mt-1.5 text-xs text-red-600"
+                >
+                  {errors.fullName.message}
+                </p>
+              )}
             </div>
 
             {/* Email */}
@@ -138,16 +159,33 @@ export default function Register({
 
               <input
                 id="register-email"
-                name="email"
                 type="email"
                 autoComplete="email"
                 placeholder="Masukkan email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                required
-                disabled={isLoading}
-                className="h-11 w-full rounded-lg border border-[#DCE2E9] bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/10 disabled:opacity-60"
+                disabled={isSubmitting || success}
+                aria-invalid={!!errors.email}
+                aria-describedby={
+                  errors.email
+                    ? "register-email-error"
+                    : undefined
+                }
+                {...register("email")}
+                className={`h-11 w-full rounded-lg border bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
+                  errors.email
+                    ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
+                    : "border-[#DCE2E9] focus:border-[#005DA9] focus:ring-[#005DA9]/10"
+                }`}
               />
+
+              {errors.email && (
+                <p
+                  id="register-email-error"
+                  role="alert"
+                  className="mt-1.5 text-xs text-red-600"
+                >
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             {/* Password */}
@@ -168,29 +206,38 @@ export default function Register({
               <div className="relative">
                 <input
                   id="register-password"
-                  name="password"
                   type={showPassword ? "text" : "password"}
                   autoComplete="new-password"
                   placeholder="Minimal 8 karakter"
-                  minLength={8}
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
-                  disabled={isLoading}
-                  className="h-11 w-full rounded-lg border border-[#DCE2E9] bg-white px-3.5 pr-12 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/10 disabled:opacity-60"
+                  disabled={isSubmitting || success}
+                  aria-invalid={!!errors.password}
+                  aria-describedby={
+                    errors.password
+                      ? "register-password-error"
+                      : "register-password-hint"
+                  }
+                  {...register("password")}
+                  className={`h-11 w-full rounded-lg border bg-white px-3.5 pr-12 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
+                    errors.password
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
+                      : "border-[#DCE2E9] focus:border-[#005DA9] focus:ring-[#005DA9]/10"
+                  }`}
                 />
 
-                {/* Eye Icon */}
+                {/* Show / Hide Password */}
                 <button
                   type="button"
-                  onClick={() => setShowPassword((prev) => !prev)}
+                  onClick={() =>
+                    setShowPassword((prev) => !prev)
+                  }
+                  disabled={isSubmitting || success}
                   aria-label={
                     showPassword
                       ? "Sembunyikan password"
                       : "Tampilkan password"
                   }
                   aria-pressed={showPassword}
-                  className="absolute inset-y-0 right-3 flex items-center justify-center"
+                  className="absolute inset-y-0 right-3 flex items-center justify-center disabled:opacity-60"
                 >
                   <Image
                     src={
@@ -207,39 +254,57 @@ export default function Register({
               </div>
 
               {/* Password Hint */}
-              <p className="mt-2 text-xs leading-5 text-[#7A8494]">
-                Gunakan password minimal 8 karakter untuk menjaga
-                keamanan akun Anda.
+              <p
+                id="register-password-hint"
+                className="mt-2 text-xs leading-5 text-[#7A8494]"
+              >
+                Gunakan password minimal 8 karakter untuk
+                menjaga keamanan akun Anda.
               </p>
+
+              {errors.password && (
+                <p
+                  id="register-password-error"
+                  role="alert"
+                  className="mt-1.5 text-xs text-red-600"
+                >
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
-            {/* Error */}
-            {error && (
+            {/* API Error */}
+            {errors.root?.message && (
               <p
                 role="alert"
                 className="rounded-lg bg-red-50 px-3 py-2.5 text-sm text-red-600"
               >
-                {error}
+                {errors.root.message}
               </p>
             )}
 
-            {/* Success */}
+            {/* Success Message */}
             {success && (
               <p
                 role="status"
                 className="rounded-lg bg-green-50 px-3 py-2.5 text-sm text-green-700"
               >
-                Pendaftaran berhasil. Silakan masuk menggunakan akun Anda.
+                Pendaftaran berhasil. Silakan masuk
+                menggunakan akun Anda.
               </p>
             )}
 
-            {/* Submit */}
+            {/* Submit Button */}
             <button
               type="submit"
-              disabled={isLoading || success}
+              disabled={isSubmitting || success}
               className="flex h-11 w-full items-center justify-center rounded-lg bg-[#005DA9] text-sm font-semibold text-white transition hover:bg-[#004D8C] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {isLoading ? "Memproses..." : "Daftar Akun"}
+              {isSubmitting
+                ? "Memproses..."
+                : success
+                  ? "Pendaftaran Berhasil"
+                  : "Daftar Akun"}
             </button>
           </form>
 
@@ -255,7 +320,11 @@ export default function Register({
           </p>
         </section>
 
-        
+        {/* Footer */}
+        <p className="mt-6 text-center text-xs text-[#98A2B3]">
+          © {new Date().getFullYear()} ProjectHub.
+          All rights reserved.
+        </p>
       </div>
     </main>
   );
