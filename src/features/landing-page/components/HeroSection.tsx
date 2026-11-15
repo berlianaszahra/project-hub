@@ -7,7 +7,7 @@ export default function HeroSection() {
     <section
       id="platform"
       aria-labelledby="hero-heading"
-      className="flex scroll-mt-6 flex-col items-center bg-primary-bg px-5 pb-24 pt-20 text-center sm:px-8 sm:pb-32 sm:pt-28 lg:pt-36"
+      className="flex scroll-mt-6 flex-col items-center px-5 pb-24 pt-20 text-center sm:px-8 sm:pb-32 sm:pt-28 lg:pt-36"
     >
       <h1
         id="hero-heading"

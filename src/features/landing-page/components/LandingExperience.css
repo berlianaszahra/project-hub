@@ -1,0 +1,196 @@
+.ph-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  background: #f4f7f3;
+  color: #233e30;
+  isolation: isolate;
+}
+
+.ph-intro-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 38% 40%, #ccebdc65, transparent 50%),
+    radial-gradient(ellipse at 75% 65%, #d4e3ff65, transparent 40%);
+}
+
+.ph-intro-scene {
+  position: absolute;
+  inset: 0;
+}
+.ph-intro-scene canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ph-intro-orb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 32% 28%,
+    #bcf4b8 0%,
+    #58cf69 20%,
+    #1caf40 52%,
+    #0c6433 100%
+  );
+  box-shadow:
+    inset -12px -18px 30px #10482935,
+    0 18px 65px #2d794b20;
+  pointer-events: none;
+}
+
+.ph-intro-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 40px;
+  gap: 16px;
+}
+.ph-intro-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+.ph-intro-brandMark {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -5px;
+  margin-right: 4px;
+}
+.ph-intro-brandMark > span {
+  color: #299c61;
+}
+.ph-intro-edition {
+  margin-left: 15px;
+  padding-left: 22px;
+  border-left: 1px solid #233e3020;
+  color: #74877a;
+  font-size: 9px;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+.ph-intro-skip {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid #233e3025;
+  border-radius: 999px;
+  background: #ffffff70;
+  padding: 10px 16px;
+  color: #45604e;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 150ms;
+}
+.ph-intro-skip:hover {
+  background: white;
+}
+.ph-intro-skip:focus-visible {
+  outline: 2px solid #0076d3;
+  outline-offset: 5px;
+}
+.ph-intro-caption {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 12%;
+  text-align: center;
+  pointer-events: none;
+}
+.ph-intro-eyebrow {
+  font-size: 9px;
+  letter-spacing: 3.5px;
+  color: #768a7b;
+}
+.ph-intro-caption p {
+  margin: 12px 0 8px;
+  font-size: clamp(22px, 3vw, 38px);
+  font-weight: 500;
+  letter-spacing: -1.3px;
+}
+.ph-intro-subcaption {
+  font-size: 11px;
+  color: #7a8980;
+}
+.ph-intro-footer {
+  position: absolute;
+  bottom: 28px;
+  left: 40px;
+  right: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 8px;
+  letter-spacing: 1.8px;
+  color: #7b8d80;
+  pointer-events: none;
+}
+.ph-intro-footer > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ph-intro-progress {
+  width: 90px;
+  height: 2px;
+  background: #233e3010;
+  overflow: hidden;
+}
+.ph-intro-progress > span {
+  display: block;
+  height: 100%;
+  background: #499967;
+  transform-origin: left;
+  animation: ph-intro-progress-fill 3.1s ease-in-out both;
+}
+@keyframes ph-intro-progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (max-width: 640px) {
+  .ph-intro-topbar {
+    padding: 20px;
+  }
+  .ph-intro-edition {
+    display: none;
+  }
+  .ph-intro-footer {
+    left: 20px;
+    right: 20px;
+    bottom: 24px;
+    gap: 12px;
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  .ph-intro-progress {
+    width: 50px;
+  }
+  .ph-intro-caption {
+    bottom: 15%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ph-intro-progress > span {
+    animation: none;
+  }
+}

@@ -14,6 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import Image from "next/image";
+import ScrollDepth from "./ScrollDepth";
 
 const PROJECTS = [
   {
@@ -64,9 +65,10 @@ const PROJECTS = [
 
 export default function PlatformPreview() {
   return (
-    <section id="#platform"
+    <section
+      id="#platform"
       aria-label="Pratinjau ruang kolaborasi ProjectHub"
-      className="bg-primary-bg px-5 pb-20 sm:px-8 sm:pb-28"
+      className="px-5 pb-20 sm:px-8 sm:pb-28"
     >
       <div className="relative mx-auto max-w-6xl">
         <Image
@@ -77,61 +79,63 @@ export default function PlatformPreview() {
           className="pointer-events-none absolute -top-12 -right-3 z-10 size-20 sm:-top-14 sm:-right-5 sm:size-24"
         />
 
-        <div className="overflow-hidden rounded-xl border border-preview-border bg-white shadow-platform-preview">
-          <PreviewTitleBar />
+        <ScrollDepth>
+          <div className="overflow-hidden rounded-xl border border-preview-border bg-white shadow-platform-preview">
+            <PreviewTitleBar />
 
-          <div className="flex min-h-100 lg:min-h-120">
-            <PreviewSidebar />
+            <div className="flex min-h-100 lg:min-h-120">
+              <PreviewSidebar />
 
-            <div className="flex min-w-0 flex-1 flex-col px-4 py-6 sm:p-7">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <h2 className="text-lg font-semibold tracking-tight text-text-primary sm:text-xl">
-                    Katalog Project Aktif
-                  </h2>
-                  <p className="mt-1 max-w-sm text-xs leading-relaxed text-text-secondary">
-                    Inisiatif produk semester ini yang membutuhkan kolaborator
-                    tambahan.
-                  </p>
-                </div>
-                <div
-                  className="flex items-center gap-2 text-[11px] font-medium"
-                  aria-hidden="true"
-                >
-                  <span className="inline-flex items-center gap-1.5 rounded bg-secondary-bg px-2.5 py-1.5 text-text-secondary">
-                    <SlidersHorizontal size={12} />
-                    Filter
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded bg-primary-blue px-2.5 py-1.5 text-white">
-                    <Plus size={12} />
-                    Buat Project
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-8 grid auto-cols-[85%] grid-flow-col gap-4 overflow-x-auto pb-4 sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-3 sm:overflow-visible lg:mt-12">
-                {PROJECTS.map((project) => (
-                  <ProjectCard key={project.name} project={project} />
-                ))}
-              </div>
-
-              <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-10 text-[10px] text-text-secondary">
-                <span className="inline-flex items-center gap-1.5">
-                  <CircleCheck
-                    size={14}
-                    className="shrink-0 text-status-green"
+              <div className="flex min-w-0 flex-1 flex-col px-4 py-6 sm:p-7">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-lg font-semibold tracking-tight text-text-primary sm:text-xl">
+                      Katalog Project Aktif
+                    </h2>
+                    <p className="mt-1 max-w-sm text-xs leading-relaxed text-text-secondary">
+                      Inisiatif produk semester ini yang membutuhkan kolaborator
+                      tambahan.
+                    </p>
+                  </div>
+                  <div
+                    className="flex items-center gap-2 text-[11px] font-medium"
                     aria-hidden="true"
-                  />
-                  Sinkronisasi otomatis dengan Discord &amp; GitHub BCC
-                </span>
-                <span className="inline-flex items-center gap-1">
-                  Lihat riwayat pembaruan
-                  <ArrowRight size={12} aria-hidden="true" />
-                </span>
+                  >
+                    <span className="inline-flex items-center gap-1.5 rounded bg-secondary-bg px-2.5 py-1.5 text-text-secondary">
+                      <SlidersHorizontal size={12} />
+                      Filter
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded bg-primary-blue px-2.5 py-1.5 text-white">
+                      <Plus size={12} />
+                      Buat Project
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-8 grid auto-cols-[85%] grid-flow-col gap-4 overflow-x-auto pb-4 sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-3 sm:overflow-visible lg:mt-12">
+                  {PROJECTS.map((project) => (
+                    <ProjectCard key={project.name} project={project} />
+                  ))}
+                </div>
+
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-10 text-[10px] text-text-secondary">
+                  <span className="inline-flex items-center gap-1.5">
+                    <CircleCheck
+                      size={14}
+                      className="shrink-0 text-status-green"
+                      aria-hidden="true"
+                    />
+                    Sinkronisasi otomatis dengan Discord &amp; GitHub BCC
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    Lihat riwayat pembaruan
+                    <ArrowRight size={12} aria-hidden="true" />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </ScrollDepth>
       </div>
     </section>
   );

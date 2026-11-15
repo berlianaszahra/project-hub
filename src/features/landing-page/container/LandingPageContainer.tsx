@@ -1,26 +1,31 @@
 import Footer from "@/shared/components/Footer";
 import Navbar from "@/shared/components/Navbar";
-import HeroSection from "../components/HeroSection";
-import PlatformPreview from "../components/PlatformPreview";
 import CollaborationSection from "../components/CollaboratioSection";
 import FeaturesSection from "../components/FeaturesSection";
-import HowItWorksSection from "../components/HowItWorksSection";
-import TestimonialSection from "../components/TestimonialSection";
 import FinalCTASection from "../components/FinalCTASection";
+import HeroParallax from "../components/HeroParallax";
+import HeroSection from "../components/HeroSection";
+import HowItWorksSection from "../components/HowItWorksSection";
+import LandingExperience from "../components/LandingExperience";
+import PlatformPreview from "../components/PlatformPreview";
+import TestimonialSection from "../components/TestimonialSection";
 
 export default function LandingPageContainer() {
   return (
-    <section className="w-full">
-      <Navbar />
-      <HeroSection />
-      <PlatformPreview />
-      <CollaborationSection />
-      <FeaturesSection />
-      <HowItWorksSection />
-      <TestimonialSection />
-      <FinalCTASection />
-      <Footer />
-    </section>
-    
+    <LandingExperience>
+      <section className="w-full">
+        <Navbar />
+        <HeroParallax>
+          <HeroSection />
+          <PlatformPreview />
+        </HeroParallax>
+        <CollaborationSection />
+        <FeaturesSection />
+        <HowItWorksSection />
+        <TestimonialSection />
+        <FinalCTASection />
+        <Footer />
+      </section>
+    </LandingExperience>
   );
 }

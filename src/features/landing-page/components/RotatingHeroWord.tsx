@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLandingIntro } from "./LandingExperience";
 
 const WORDS = [
   { text: "Hebat", background: "#cef3d7", dot: "#1caf40" },
@@ -11,6 +12,7 @@ const WORDS = [
 
 export default function RotatingHeroWord() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { active: introActive } = useLandingIntro();
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -18,7 +20,8 @@ export default function RotatingHeroWord() {
 
     function updateTimer() {
       clearInterval(timer);
-      if (!preference.matches) {
+      if (introActive) setActiveIndex(0);
+      if (!preference.matches && !introActive) {
         timer = setInterval(() => {
           setActiveIndex((index) => (index + 1) % WORDS.length);
         }, 1000);
@@ -31,9 +34,9 @@ export default function RotatingHeroWord() {
       clearInterval(timer);
       preference.removeEventListener("change", updateTimer);
     };
-  }, []);
+  }, [introActive]);
 
-  const activeWord = WORDS[activeIndex];
+  const activeWord = WORDS[introActive ? 0 : activeIndex];
 
   return (
     <>
@@ -44,6 +47,7 @@ export default function RotatingHeroWord() {
         style={{ backgroundColor: activeWord.background }}
       >
         <span
+          data-intro-dot=""
           className="size-[0.27em] shrink-0 rounded-full transition-colors duration-300 motion-reduce:transition-none"
           style={{ backgroundColor: activeWord.dot }}
         />
