@@ -16,6 +16,10 @@ export async function registerAccount(data: RegisterFormData) {
   await authClient.post("/register", data);
 }
 
+export async function logout() {
+  await authClient.post("/logout", {});
+}
+
 export function getAuthErrorMessage(error: unknown, fallback: string) {
   if (!axios.isAxiosError<{ message?: unknown }>(error)) return fallback;
 

@@ -30,10 +30,14 @@ API_BASE_URL=https://group1-be.bccdev.id/api/v1
 ```
 
 Sertakan akhiran `/api/v1` dalam `API_BASE_URL`. Di VM BCC Group 1,
-`compose.yaml` memakai domain backend itu sebagai nilai bawaan. Frontend
-meneruskan login dan registrasi ke backend lewat route Next.js
-`/api/auth/login` dan `/api/auth/register`. Token login disimpan dalam cookie
-`HttpOnly`.
+`compose.yaml` memakai `http://host.docker.internal:8080/api/v1` agar container
+frontend dapat menjangkau port backend di VM. Port backend harus bisa
+dijangkau dari jaringan Docker.
+
+Login, registrasi, dan logout diteruskan ke backend lewat route Next.js
+`/api/auth/login`, `/api/auth/register`, dan `/api/auth/logout`.
+Token login disimpan dalam cookie `HttpOnly`. Logout dari profil menghapus
+cookie di browser dan mencoba mencabut sesi di backend.
 
 ## Learn More
 
