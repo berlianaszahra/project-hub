@@ -1,8 +1,8 @@
 
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
 import { Plus } from "lucide-react";
 
 import KatalogHeader from "@/features/product-katalog/components/KatalogHeader";
@@ -29,7 +29,7 @@ type MyProjectsProps = {
   managedProjects?: ManagedProject[];
   joinedProjects?: JoinedProject[];
   applications?: ProjectApplication[];
-  onCreateProject?: () => void;
+
   onManageProject?: (project: ManagedProject) => void;
   onReviewApplicants?: (project: ManagedProject) => void;
   onOpenWorkspace?: (project: JoinedProject) => void;
@@ -41,7 +41,6 @@ export default function MyProjects({
   managedProjects = sampleManagedProjects,
   joinedProjects = sampleJoinedProjects,
   applications = sampleApplications,
-  onCreateProject,
   onManageProject,
   onReviewApplicants,
   onOpenWorkspace,
@@ -52,23 +51,20 @@ export default function MyProjects({
 
   return (
     <div className="min-h-screen bg-white font-sans text-[#1C1B1B]">
-
       {/* Shared Sidebar */}
       <KatalogSidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
 
-      {/* Main Area */}
+      {/* Main Content */}
       <div className="min-w-0 lg:pl-60">
-
         {/* Shared Header */}
         <KatalogHeader
           onMenuClick={() => setSidebarOpen(true)}
         />
 
         <main className="mx-auto w-full max-w-[1120px] px-5 pb-12 pt-8 sm:px-6 lg:pt-10">
-
           {/* Page Header */}
           <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>
@@ -79,7 +75,7 @@ export default function MyProjects({
               >
                 <Link
                   href="/katalog"
-                  className="text-[#414752] hover:text-[#005DA9]"
+                  className="text-[#414752] transition hover:text-[#005DA9]"
                 >
                   Eksplorasi
                 </Link>
@@ -88,7 +84,10 @@ export default function MyProjects({
                   /
                 </span>
 
-                <span className="font-medium text-[#1C1B1B]">
+                <span
+                  aria-current="page"
+                  className="font-medium text-[#1C1B1B]"
+                >
                   Project Saya
                 </span>
               </nav>
@@ -102,21 +101,18 @@ export default function MyProjects({
               </p>
             </div>
 
-            {/* Create Button */}
-            <button
-              type="button"
-              onClick={onCreateProject}
-              disabled={!onCreateProject}
-              className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#005DA9] px-4 text-sm font-medium text-white shadow-sm transition hover:bg-[#004B89] disabled:cursor-not-allowed disabled:opacity-50"
+            {/* Create Project Button */}
+            <Link
+              href="/project-saya/buat"
+              className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#005DA9] px-4 text-sm font-medium text-white shadow-sm transition hover:bg-[#004B89] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#005DA9]"
             >
               <Plus size={16} aria-hidden="true" />
               Buat Project Baru
-            </button>
+            </Link>
           </div>
 
-          {/* Content Sections */}
+          {/* Project Sections */}
           <div className="space-y-10">
-
             {/* Managed Projects */}
             <ProjectSection
               title="Project yang Saya Kelola"
@@ -136,13 +132,20 @@ export default function MyProjects({
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-[#EAE7E7] bg-[#FAF9F8] p-8 text-center">
-                  <p className="text-sm font-semibold">
+                  <p className="text-sm font-semibold text-[#1C1B1B]">
                     Belum ada project yang dikelola
                   </p>
 
                   <p className="mt-2 text-xs text-[#717784]">
                     Project yang Anda pimpin akan muncul di sini.
                   </p>
+
+                  <Link
+                    href="/project-saya/buat"
+                    className="mt-4 inline-block text-sm font-medium text-[#005DA9] hover:underline"
+                  >
+                    Buat Project Pertama
+                  </Link>
                 </div>
               )}
             </ProjectSection>
@@ -166,7 +169,7 @@ export default function MyProjects({
                 </div>
               ) : (
                 <div className="rounded-xl border border-dashed border-[#EAE7E7] bg-[#FAF9F8] p-8 text-center">
-                  <p className="text-sm font-semibold">
+                  <p className="text-sm font-semibold text-[#1C1B1B]">
                     Belum mengikuti project
                   </p>
 
@@ -184,7 +187,7 @@ export default function MyProjects({
               )}
             </ProjectSection>
 
-            {/* Applications */}
+            {/* Application Status */}
             <ApplicationStatusCard
               applications={applications}
               onViewApplications={onViewApplications}
