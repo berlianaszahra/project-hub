@@ -115,6 +115,7 @@ export default function JoinedProjectCard({
           <div className="flex items-center">
             {project.teamInitials.map((initial, index) => (
               <div
+                // biome-ignore lint/suspicious/noArrayIndexKey: This static avatar preview has no member identifiers and may contain duplicate initials.
                 key={`${initial}-${index}`}
                 title={`Anggota tim ${index + 1}`}
                 className="-ml-1 first:ml-0 flex size-8 items-center justify-center rounded-full border-2 border-white bg-[#D4E3FF] text-xs font-semibold text-[#001C39]"
@@ -141,7 +142,7 @@ export default function JoinedProjectCard({
             disabled={!onViewTasks}
             className="h-8 rounded bg-[#F0EDED] px-4 text-xs font-medium text-[#1C1B1B] hover:bg-[#E5E2E1] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Lihat Tugas Saya
+            Fokus Kontribusi Saya
           </button>
 
           <button

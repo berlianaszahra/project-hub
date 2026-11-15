@@ -1,28 +1,28 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
 import { Plus } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import KatalogHeader from "@/features/product-katalog/components/KatalogHeader";
-import KatalogSidebar from "@/features/product-katalog/components/KatalogSidebar";
+import ProjectSidebar from "@/shared/components/ProjectSidebar";
 
 import {
-  managedProject as sampleManagedProjects,
-  joinedProject as sampleJoinedProjects,
   projectApplication as sampleApplications,
+  joinedProject as sampleJoinedProjects,
+  managedProject as sampleManagedProjects,
 } from "../data/myProjects";
 
 import type {
-  ManagedProject,
   JoinedProject,
+  ManagedProject,
   ProjectApplication,
 } from "../types/projects";
-
-import ProjectSection from "./ProjectSection";
-import ManagedProjectCard from "./ManagedProjectCard";
-import JoinedProjectCard from "./JoinedProjectCard";
 import ApplicationStatusCard from "./ApplicationStatusCard";
+import JoinedProjectCard from "./JoinedProjectCard";
+import ManagedProjectCard from "./ManagedProjectCard";
+import ProjectSection from "./ProjectSection";
 
 type MyProjectsProps = {
   managedProjects?: ManagedProject[];
@@ -46,12 +46,13 @@ export default function MyProjects({
   onViewTasks,
   onViewApplications,
 }: MyProjectsProps) {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white font-sans text-[#1C1B1B]">
       {/* Shared Sidebar */}
-      <KatalogSidebar
+      <ProjectSidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
@@ -98,7 +99,7 @@ export default function MyProjects({
 
             {/* Create Project Button */}
             <Link
-              href="/project-saya/buat"
+              href="/projek-saya/buat"
               className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-lg bg-[#005DA9] px-4 text-sm font-medium text-white shadow-sm transition hover:bg-[#004B89] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#005DA9]"
             >
               <Plus size={16} aria-hidden="true" />
@@ -120,8 +121,15 @@ export default function MyProjects({
                     <ManagedProjectCard
                       key={project.id}
                       project={project}
-                      onManage={onManageProject}
-                      onReview={onReviewApplicants}
+                      onManage={
+                        onManageProject ??
+                        ((project) => router.push(`/projek-saya/${project.id}`))
+                      }
+                      onReview={
+                        onReviewApplicants ??
+                        ((project) =>
+                          router.push(`/projek-saya/${project.id}/pengajuan`))
+                      }
                     />
                   ))}
                 </div>
@@ -136,7 +144,7 @@ export default function MyProjects({
                   </p>
 
                   <Link
-                    href="/project-saya/buat"
+                    href="/projek-saya/buat"
                     className="mt-4 inline-block text-sm font-medium text-[#005DA9] hover:underline"
                   >
                     Buat Project Pertama
@@ -157,8 +165,14 @@ export default function MyProjects({
                     <JoinedProjectCard
                       key={project.id}
                       project={project}
-                      onOpen={onOpenWorkspace}
-                      onViewTasks={onViewTasks}
+                      onOpen={
+                        onOpenWorkspace ??
+                        ((project) => router.push(`/projek-saya/${project.id}`))
+                      }
+                      onViewTasks={
+                        onViewTasks ??
+                        ((project) => router.push(`/projek-saya/${project.id}`))
+                      }
                     />
                   ))}
                 </div>
@@ -185,7 +199,9 @@ export default function MyProjects({
             {/* Application Status */}
             <ApplicationStatusCard
               applications={applications}
-              onViewApplications={onViewApplications}
+              onViewApplications={
+                onViewApplications ?? (() => router.push("/pengajuan-saya"))
+              }
             />
           </div>
         </main>

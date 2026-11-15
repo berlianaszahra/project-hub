@@ -1,4 +1,4 @@
-import { ArrowRight, ClipboardList, Users, UserPlus } from "lucide-react";
+import { ArrowRight, ClipboardList, UserPlus, Users } from "lucide-react";
 
 import type { ManagedProject } from "../types/projects";
 
@@ -115,6 +115,7 @@ export default function ManagedProjectCard({
 
                 {pending && project.pendingApplicants > 0 && (
                   <span
+                    role="img"
                     aria-label="Ada pengajuan yang perlu ditinjau"
                     className="size-2.5 shrink-0 rounded-full bg-[#705C2A]"
                   />

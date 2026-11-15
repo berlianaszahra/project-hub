@@ -1,12 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-
+import ProjectSidebar from "@/shared/components/ProjectSidebar";
 import { projects as sampleProjects } from "../data/project";
 import type { Project, ProjectStatus } from "../types/project";
-
 import KatalogHeader from "./KatalogHeader";
-import KatalogSidebar from "./KatalogSidebar";
 import ProjectCard from "./ProjectCard";
 
 type StatusFilter = "Semua Project" | ProjectStatus;
@@ -93,7 +91,7 @@ export default function KatalogProjects({
   return (
     <div className="min-h-screen bg-white font-sans text-[#1C1B1B]">
       {/* Sidebar */}
-      <KatalogSidebar
+      <ProjectSidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
