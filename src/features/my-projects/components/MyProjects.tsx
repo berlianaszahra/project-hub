@@ -141,7 +141,7 @@ export default function MyProjects({
                   </p>
 
                   <Link
-                    href="/project-saya/buat"
+                    href="/projek-saya/buat"
                     className="mt-4 inline-block text-sm font-medium text-[#005DA9] hover:underline"
                   >
                     Buat Project Pertama

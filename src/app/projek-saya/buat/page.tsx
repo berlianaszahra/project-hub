@@ -5,7 +5,6 @@ import { useState } from "react";
 
 import KatalogSidebar from "@/features/product-katalog/components/KatalogSidebar";
 import KatalogHeader from "@/features/product-katalog/components/KatalogHeader";
-
 import CreateProjectForm from "@/features/create-project/components/CreateProjectForm";
 
 export default function CreateProjectPage() {
