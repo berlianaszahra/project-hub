@@ -144,6 +144,7 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
           <span>Workspace internal</span>
           <span aria-hidden="true">·</span>
           <span>2026</span>
+          <span></span>
         </footer>
       </section>
     </main>
