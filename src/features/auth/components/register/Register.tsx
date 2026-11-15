@@ -2,6 +2,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 type RegisterData = {
   fullName: string;
@@ -15,10 +17,22 @@ type RegisterProps = {
   logoSrc?: string;
 };
 
+function EyeIcon({ hidden }: { hidden: boolean }) {
+  return (
+    <Image
+      src={hidden ? "/images/open-eye.png" : "/images/close-eye.png"}
+      alt=""
+      width={18}
+      height={18}
+      className="h-[18px] w-[18px] object-contain"
+    />
+  );
+}
+
 export default function Register({
   onRegister,
   loginHref = "/login",
-  logoSrc,
+  logoSrc = "/images/BCC horizontal.png",
 }: RegisterProps) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -45,11 +59,13 @@ export default function Register({
 
     try {
       setSubmitting(true);
+
       await onRegister({
         fullName: fullName.trim(),
         email: email.trim(),
         password,
       });
+
       setSuccess(true);
     } catch (cause) {
       setError(
@@ -64,23 +80,31 @@ export default function Register({
 
   return (
     <main className="register-page">
-      <section className="register-card" aria-labelledby="register-title">
+      <section
+        className="register-card"
+        aria-labelledby="register-title"
+      >
+        {/* BCC Logo */}
         <div className="register-brand">
-          {logoSrc ? (
-            <img className="register-logo" src={logoSrc} alt="Logo BCC" />
-          ) : (
-            <div className="register-logo register-logo-fallback">
-              BCC
-            </div>
-          )}
+          <Image
+            className="register-logo"
+            src={logoSrc}
+            alt="BCC ProjectHub"
+            width={180}
+            height={70}
+            priority
+          />
         </div>
 
+        {/* Header */}
         <header className="register-heading">
           <h1 id="register-title">Buat akun baru</h1>
           <p>Daftar untuk mulai berkolaborasi di BCC.</p>
         </header>
 
+        {/* Register Form */}
         <form className="register-form" onSubmit={handleSubmit}>
+          {/* Nama Lengkap */}
           <div className="register-field">
             <label htmlFor="full-name">Nama Lengkap</label>
             <input
@@ -95,6 +119,7 @@ export default function Register({
             />
           </div>
 
+          {/* Email */}
           <div className="register-field">
             <label htmlFor="register-email">Email</label>
             <input
@@ -109,6 +134,7 @@ export default function Register({
             />
           </div>
 
+          {/* Password */}
           <div className="register-field">
             <div className="register-password-label">
               <label htmlFor="register-password">Password</label>
@@ -137,36 +163,34 @@ export default function Register({
                     : "Tampilkan kata sandi"
                 }
                 aria-pressed={showPassword}
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => setShowPassword((current) => !current)}
               >
-                {showPassword ? (
-                  <svg viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" strokeWidth="1.7"
-                    strokeLinecap="round" strokeLinejoin="round"
-                    aria-hidden="true">
-                    <path d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8" />
-                    <path d="M9.9 5.3A10.8 10.8 0 0 1 12 5c5 0 9 4.5 10 7a13.5 13.5 0 0 1-3.2 4.1M6.2 6.2C4.3 7.5 2.8 9.5 2 12c1 2.5 5 7 10 7 1.3 0 2.6-.3 3.7-.8" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" strokeWidth="1.7"
-                    strokeLinecap="round" strokeLinejoin="round"
-                    aria-hidden="true">
-                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                )}
+                <EyeIcon hidden={showPassword} />
               </button>
             </div>
           </div>
 
+          {/* Password Hint */}
           <p className="register-hint">
-            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <circle cx="10" cy="10" r="8"
-                stroke="currentColor" strokeWidth="1.5" />
-              <path d="m6 10 2.5 2.5L14 7"
-                stroke="currentColor" strokeWidth="1.5"
-                strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              viewBox="0 0 20 20"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle
+                cx="10"
+                cy="10"
+                r="8"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <path
+                d="m6 10 2.5 2.5L14 7"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             <span>
               Gunakan kata sandi minimal 8 karakter untuk menjaga
@@ -174,36 +198,54 @@ export default function Register({
             </span>
           </p>
 
+          {/* Feedback */}
           {error && (
-            <p className="register-feedback register-error" role="alert">
+            <p
+              className="register-feedback register-error"
+              role="alert"
+            >
               {error}
             </p>
           )}
 
           {success && (
-            <p className="register-feedback register-success" role="status">
+            <p
+              className="register-feedback register-success"
+              role="status"
+            >
               Pendaftaran berhasil.
             </p>
           )}
 
+          {/* Submit Button */}
           <button
             className="register-submit"
             type="submit"
             disabled={submitting}
           >
             {submitting ? "Memproses..." : "Daftar Akun"}
-            {!submitting && <span aria-hidden="true">→</span>}
+            {!submitting && (
+              <span aria-hidden="true">→</span>
+            )}
           </button>
         </form>
 
+        {/* Login Link */}
         <p className="register-login">
-          Sudah punya akun? <a href={loginHref}>Masuk</a>
+          Sudah punya akun?{" "}
+          <Link href={loginHref}>Masuk</Link>
         </p>
 
+        {/* Footer */}
         <p className="register-trust">
-          <svg viewBox="0 0 16 20" fill="none"
-            stroke="currentColor" strokeWidth="1.5"
-            strokeLinejoin="round" aria-hidden="true">
+          <svg
+            viewBox="0 0 16 20"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
             <rect x="2.5" y="8" width="11" height="9" rx="2" />
             <path d="M5 8V5a3 3 0 0 1 6 0v3" />
           </svg>
@@ -219,7 +261,7 @@ export default function Register({
           align-items: center;
           justify-content: center;
           padding: 48px 16px;
-          background: #f8f9fb;
+          background: #fcf9f8;
           font-family: Inter, Arial, sans-serif;
           box-sizing: border-box;
         }
@@ -243,25 +285,16 @@ export default function Register({
         .register-brand {
           display: flex;
           justify-content: center;
+          align-items: center;
+          width: 100%;
           margin-bottom: 24px;
         }
 
-        .register-logo {
-          width: 40px;
-          height: 40px;
-          border-radius: 6px;
+        .register-brand :global(.register-logo) {
+          display: block;
+          width: 180px;
+          height: auto;
           object-fit: contain;
-        }
-
-        .register-logo-fallback {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: #005da9;
-          color: white;
-          font-size: 12px;
-          font-weight: 700;
-          letter-spacing: -0.4px;
         }
 
         .register-heading {
@@ -372,17 +405,11 @@ export default function Register({
           border: none;
           border-radius: 4px;
           background: transparent;
-          color: #717784;
           cursor: pointer;
         }
 
         .register-eye:hover {
-          color: #005da9;
-        }
-
-        .register-eye svg {
-          width: 18px;
-          height: 18px;
+          background: #f6f3f2;
         }
 
         .register-hint {
@@ -468,13 +495,13 @@ export default function Register({
           line-height: 22px;
         }
 
-        .register-login a {
+        .register-login :global(a) {
           color: #005da9;
           font-weight: 500;
           text-decoration: none;
         }
 
-        .register-login a:hover {
+        .register-login :global(a:hover) {
           text-decoration: underline;
         }
 
