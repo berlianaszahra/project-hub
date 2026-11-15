@@ -1,0 +1,18 @@
+services:
+  frontend:
+    image: ${APP_IMAGE:-projecthub-frontend:local}
+    restart: unless-stopped
+
+    ports:
+      - "80:3000"
+
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 5s
+      timeout: 4s
+      retries: 6
+      start_period: 10s
