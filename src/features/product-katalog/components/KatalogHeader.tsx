@@ -1,5 +1,7 @@
 "use client";
 
+import ProfileLink from "@/shared/components/ProfileLink";
+
 type KatalogHeaderProps = {
   onMenuClick: () => void;
 };
@@ -28,13 +30,7 @@ export default function KatalogHeader({ onMenuClick }: KatalogHeaderProps) {
       {/* Right Section */}
       <div className="flex items-center gap-3">
         {/* User Avatar */}
-        <div
-          className="flex size-8 items-center justify-center rounded-full bg-[#D4E3FF] text-xs font-semibold text-[#001C39]"
-          role="img"
-          aria-label="Akun contoh Nadia"
-        >
-          N
-        </div>
+        <ProfileLink />
       </div>
     </header>
   );
