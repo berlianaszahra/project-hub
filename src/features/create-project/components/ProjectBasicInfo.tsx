@@ -13,7 +13,7 @@ import type { CreateProjectFormData } from "../schemas/project.schema";
 import {
   projectCategories,
   technologyOptions,
-} from "../data/ProjectOptions";
+} from "../data/projectOptions";
 import FormSection from "./FormSection";
 
 const inputClass =

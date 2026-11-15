@@ -8,7 +8,7 @@ import {
 import { Plus, Trash2, Users } from "lucide-react";
 
 import type { CreateProjectFormData } from "../schemas/project.schema";
-import { defaultRecruitmentPosition } from "../data/ProjectOptions";
+import { defaultRecruitmentPosition } from "../data/projectOptions";
 import FormSection from "./FormSection";
 
 const inputClass =

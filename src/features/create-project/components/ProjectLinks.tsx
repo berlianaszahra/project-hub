@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 import type { CreateProjectFormData } from "../schemas/project.schema";
-import { platformOptions } from "../data/ProjectOptions";
+import { platformOptions } from "../data/projectOptions";
 import FormSection from "./FormSection";
 
 const inputClass =
