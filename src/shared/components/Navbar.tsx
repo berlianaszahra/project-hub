@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -25,13 +26,20 @@ export default function Navbar() {
         if (event.key === "Escape") setMenuOpen(false);
       }}
     >
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-6 px-5 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:h-18 sm:gap-6 sm:px-8 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
         <Link
           href="/"
-          className={`w-fit text-lg font-semibold tracking-tight ${focusStyles}`}
+          className={`flex w-fit min-w-0 items-center gap-2 text-base font-semibold tracking-tight sm:gap-2.5 sm:text-lg ${focusStyles}`}
           onClick={() => setMenuOpen(false)}
         >
-          BCC ProjectHub
+          <Image
+            src="/bcclogo.png"
+            width={40}
+            height={40}
+            alt=""
+            className="size-12 shrink-0 object-contain sm:size-20"
+          />
+          <span className="whitespace-nowrap">ProjectHub</span>
         </Link>
 
         <ul className="hidden items-center gap-7 lg:flex">
@@ -67,7 +75,7 @@ export default function Navbar() {
           aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
           aria-expanded={menuOpen}
           aria-controls="mobile-navigation"
-          className={`inline-flex size-11 items-center justify-center rounded-lg hover:bg-secondary-bg lg:hidden ${focusStyles}`}
+          className={`inline-flex size-11 shrink-0 items-center justify-center rounded-lg hover:bg-secondary-bg lg:hidden ${focusStyles}`}
           onClick={() => setMenuOpen((open) => !open)}
         >
           {menuOpen ? (
@@ -81,7 +89,7 @@ export default function Navbar() {
       <div
         id="mobile-navigation"
         hidden={!menuOpen}
-        className="border-t border-black/10 px-5 pb-5 sm:px-8 lg:hidden"
+        className="border-t border-black/10 px-4 pb-5 sm:px-8 lg:hidden"
       >
         <ul className="flex flex-col py-3">
           {NAV_ITEMS.map((item, index) => (

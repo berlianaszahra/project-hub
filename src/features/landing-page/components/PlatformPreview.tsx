@@ -64,7 +64,7 @@ const PROJECTS = [
 
 export default function PlatformPreview() {
   return (
-    <section
+    <section id="#platform"
       aria-label="Pratinjau ruang kolaborasi ProjectHub"
       className="bg-primary-bg px-5 pb-20 sm:px-8 sm:pb-28"
     >
