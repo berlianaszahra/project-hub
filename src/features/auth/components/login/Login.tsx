@@ -131,11 +131,10 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
                 aria-invalid={!!errors.email}
                 aria-describedby={errors.email ? "email-error" : undefined}
                 {...register("email")}
-                className={`h-11 w-full rounded-lg border bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
-                  errors.email
+                className={`h-11 w-full rounded-lg border bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${errors.email
                     ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
                     : "border-[#DCE2E9] focus:border-[#005DA9] focus:ring-[#005DA9]/10"
-                }`}
+                  }`}
               />
 
               {errors.email && (
@@ -179,11 +178,10 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
                     errors.password ? "password-error" : undefined
                   }
                   {...register("password")}
-                  className={`h-11 w-full rounded-lg border bg-white px-3.5 pr-12 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
-                    errors.password
+                  className={`h-11 w-full rounded-lg border bg-white px-3.5 pr-12 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${errors.password
                       ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
                       : "border-[#DCE2E9] focus:border-[#005DA9] focus:ring-[#005DA9]/10"
-                  }`}
+                    }`}
                 />
 
                 {/* Show / Hide Password */}
@@ -281,7 +279,7 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
 
         {/* Footer */}
         <p className="mt-6 text-center text-xs text-[#98A2B3]">
-          © {new Date().getFullYear()} ProjectHub. All rights reserved.
+          © 2026 ProjectHub. All rights reserved.
         </p>
       </div>
     </main>
