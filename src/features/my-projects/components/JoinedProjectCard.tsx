@@ -1,4 +1,5 @@
 import { ArrowRight, CheckCircle2, Users } from "lucide-react";
+import Link from "next/link";
 
 import type { JoinedProject } from "../types/projects";
 
@@ -27,7 +28,12 @@ export default function JoinedProjectCard({
 
             <div>
               <h3 className="text-[22px] font-semibold leading-7 tracking-tight text-[#1C1B1B]">
-                {project.name}
+                <Link
+                  href={`/projek-saya/${project.id}`}
+                  className="hover:text-[#005DA9]"
+                >
+                  {project.name}
+                </Link>
               </h3>
 
               <p className="text-[11px] text-[#717784]">
@@ -136,24 +142,36 @@ export default function JoinedProjectCard({
         </p>
 
         <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => onViewTasks?.(project)}
-            disabled={!onViewTasks}
-            className="h-8 rounded bg-[#F0EDED] px-4 text-xs font-medium text-[#1C1B1B] hover:bg-[#E5E2E1] disabled:cursor-not-allowed disabled:opacity-50"
+          <Link
+            href={`/projek-saya/${project.id}#fokus-kontribusi`}
+            onClick={
+              onViewTasks
+                ? (event) => {
+                    event.preventDefault();
+                    onViewTasks(project);
+                  }
+                : undefined
+            }
+            className="inline-flex h-8 items-center rounded bg-[#F0EDED] px-4 text-xs font-medium text-[#1C1B1B] hover:bg-[#E5E2E1] disabled:cursor-not-allowed disabled:opacity-50"
           >
             Fokus Kontribusi Saya
-          </button>
+          </Link>
 
-          <button
-            type="button"
-            onClick={() => onOpen?.(project)}
-            disabled={!onOpen}
+          <Link
+            href={`/projek-saya/${project.id}`}
+            onClick={
+              onOpen
+                ? (event) => {
+                    event.preventDefault();
+                    onOpen(project);
+                  }
+                : undefined
+            }
             className="inline-flex h-8 items-center gap-1.5 rounded bg-[#005DA9] px-4 text-xs font-medium text-white hover:bg-[#004B89] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Buka Workspace
+            Buka Ringkasan Member
             <ArrowRight size={13} aria-hidden="true" />
-          </button>
+          </Link>
         </div>
       </div>
     </article>

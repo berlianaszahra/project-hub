@@ -5,6 +5,7 @@ export const workspaces: Workspace[] = [
   {
     id: "campus-connect",
     catalogId: "1",
+    currentUserId: "nadia",
     name: "CampusConnect",
     role: "Project Lead",
     status: "Recruiting",
@@ -17,13 +18,18 @@ export const workspaces: Workspace[] = [
       {
         id: "nadia",
         name: "Nadia",
+        email: "nadia@bcc.id",
+        joinedAt: "2026-08-01",
         role: "Project Lead",
         position: "Lead & Product Strategy",
+        joinedAsCreator: true,
         focus: "Mengatur arah produk dan kebutuhan tim.",
       },
       {
         id: "farhan",
         name: "Farhan",
+        email: "farhan@bcc.id",
+        joinedAt: "2026-08-15",
         role: "Member",
         position: "Frontend Developer",
         focus: "Mengembangkan antarmuka dan integrasi API.",
@@ -31,6 +37,9 @@ export const workspaces: Workspace[] = [
       {
         id: "rizky",
         name: "Rizky Maulana",
+        email: "rizky@bcc.id",
+        joinedAt: "2026-09-18",
+        newlyAccepted: true,
         role: "Member",
         position: "Backend Developer",
         focus: "Merancang database dan layanan API.",
@@ -102,6 +111,7 @@ export const workspaces: Workspace[] = [
   {
     id: "eco-track",
     catalogId: "4",
+    currentUserId: "nadia",
     name: "EcoTrack",
     role: "Member",
     status: "Active",

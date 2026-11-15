@@ -10,6 +10,10 @@ export type WorkspaceMember = {
   role: "Project Lead" | "Member";
   position: string;
   focus: string;
+  email?: string;
+  joinedAt?: string;
+  joinedAsCreator?: boolean;
+  newlyAccepted?: boolean;
 };
 export type WorkspacePosition = {
   id: string;
@@ -21,6 +25,7 @@ export type WorkspacePosition = {
 type BaseWorkspace = {
   id: string;
   catalogId: string;
+  currentUserId: string;
   name: string;
   description: string;
   status: "Recruiting" | "Active" | "Completed";

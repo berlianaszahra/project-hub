@@ -121,15 +121,8 @@ export default function MyProjects({
                     <ManagedProjectCard
                       key={project.id}
                       project={project}
-                      onManage={
-                        onManageProject ??
-                        ((project) => router.push(`/projek-saya/${project.id}`))
-                      }
-                      onReview={
-                        onReviewApplicants ??
-                        ((project) =>
-                          router.push(`/projek-saya/${project.id}/pengajuan`))
-                      }
+                      onManage={onManageProject}
+                      onReview={onReviewApplicants}
                     />
                   ))}
                 </div>
@@ -165,14 +158,8 @@ export default function MyProjects({
                     <JoinedProjectCard
                       key={project.id}
                       project={project}
-                      onOpen={
-                        onOpenWorkspace ??
-                        ((project) => router.push(`/projek-saya/${project.id}`))
-                      }
-                      onViewTasks={
-                        onViewTasks ??
-                        ((project) => router.push(`/projek-saya/${project.id}`))
-                      }
+                      onOpen={onOpenWorkspace}
+                      onViewTasks={onViewTasks}
                     />
                   ))}
                 </div>

@@ -99,7 +99,10 @@ export default function MemberOverview({
         </section>
       </div>
       <div className="my-8 grid gap-4 md:grid-cols-3">
-        <section className="rounded-xl border border-[#F0EEEE] bg-white p-5">
+        <section
+          id="fokus-kontribusi"
+          className="scroll-mt-20 rounded-xl border border-[#F0EEEE] bg-white p-5"
+        >
           <Palette
             size={22}
             className="mb-4 rounded bg-[#D4E3FF] p-1 text-[#34567E]"

@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, Compass, PanelsTopLeft, UsersRound } from "lucide-react";
+import Link from "next/link";
 
 const collaborationItems = [
   {
