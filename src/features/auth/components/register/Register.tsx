@@ -255,10 +255,7 @@ export default function Register({
           </p>
         </section>
 
-        {/* Footer */}
-        <p className="mt-6 text-center text-xs text-[#98A2B3]">
-          © {new Date().getFullYear()} ProjectHub. All rights reserved.
-        </p>
+        
       </div>
     </main>
   );

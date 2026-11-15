@@ -78,7 +78,7 @@ export default function Login({
           {/* Logo BCC */}
           <div className="mb-8 flex flex-col items-center">
             <Image
-              src="/images/logo-bcc.png"
+              src="/images/BCC horizontal.png"
               alt="BCC Logo"
               width={68}
               height={68}
@@ -164,8 +164,8 @@ export default function Login({
                   <Image
                     src={
                       showPassword
-                        ? "/images/eye-open.png"
-                        : "/images/eye-close.png"
+                        ? "/images/open-eye.png"
+                        : "/images/close-eye.png"
                     }
                     alt=""
                     width={20}
@@ -215,7 +215,7 @@ export default function Login({
             className="flex h-11 w-full items-center justify-center gap-3 rounded-lg border border-[#DCE2E9] bg-white text-sm font-medium text-[#344054] transition hover:bg-[#F8FAFC] disabled:opacity-60"
           >
             <Image
-              src="/images/google.png"
+              src="/images/google-logo.png"
               alt=""
               width={20}
               height={20}
@@ -237,10 +237,7 @@ export default function Login({
           </p>
         </div>
 
-        {/* Footer */}
-        <p className="mt-6 text-center text-xs text-[#98A2B3]">
-          © {new Date().getFullYear()} ProjectHub. All rights reserved.
-        </p>
+        
       </div>
     </main>
   );
