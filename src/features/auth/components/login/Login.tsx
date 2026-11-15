@@ -1,29 +1,19 @@
-
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  loginSchema,
-  type LoginFormData,
-} from "../../schemas/login.schema";
+import { type LoginFormData, loginSchema } from "../../schemas/login.schema";
 
 type LoginProps = {
-  onLogin?: (
-    email: string,
-    password: string,
-  ) => Promise<void> | void;
+  onLogin?: (email: string, password: string) => Promise<void> | void;
   onGoogleLogin?: () => Promise<void> | void;
 };
 
-export default function Login({
-  onLogin,
-  onGoogleLogin,
-}: LoginProps) {
+export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
@@ -97,7 +87,6 @@ export default function Login({
     <main className="flex min-h-screen items-center justify-center bg-[#F6F8FB] px-4 py-10">
       <div className="w-full max-w-[430px]">
         <section className="rounded-2xl border border-[#E9EDF2] bg-white px-6 py-9 shadow-[0_8px_32px_rgba(15,23,42,0.04)] sm:px-9">
-
           {/* Logo BCC */}
           <div className="mb-8 flex flex-col items-center">
             <Image
@@ -140,9 +129,7 @@ export default function Login({
                 placeholder="Enter your email"
                 disabled={isLoading}
                 aria-invalid={!!errors.email}
-                aria-describedby={
-                  errors.email ? "email-error" : undefined
-                }
+                aria-describedby={errors.email ? "email-error" : undefined}
                 {...register("email")}
                 className={`h-11 w-full rounded-lg border bg-white px-3.5 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
                   errors.email
@@ -189,9 +176,7 @@ export default function Login({
                   disabled={isLoading}
                   aria-invalid={!!errors.password}
                   aria-describedby={
-                    errors.password
-                      ? "password-error"
-                      : undefined
+                    errors.password ? "password-error" : undefined
                   }
                   {...register("password")}
                   className={`h-11 w-full rounded-lg border bg-white px-3.5 pr-12 text-sm text-[#172033] outline-none transition placeholder:text-[#A3AAB5] focus:ring-2 disabled:opacity-60 ${
@@ -204,14 +189,8 @@ export default function Login({
                 {/* Show / Hide Password */}
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowPassword((prev) => !prev)
-                  }
-                  aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
-                  }
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                   aria-pressed={showPassword}
                   disabled={isLoading}
                   className="absolute inset-y-0 right-3 flex items-center justify-center disabled:opacity-60"
@@ -265,9 +244,7 @@ export default function Login({
           <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-[#E9EDF2]" />
 
-            <span className="text-xs text-[#98A2B3]">
-              Or continue with
-            </span>
+            <span className="text-xs text-[#98A2B3]">Or continue with</span>
 
             <div className="h-px flex-1 bg-[#E9EDF2]" />
           </div>
@@ -280,16 +257,14 @@ export default function Login({
             className="flex h-11 w-full items-center justify-center gap-3 rounded-lg border border-[#DCE2E9] bg-white text-sm font-medium text-[#344054] transition hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Image
-              src="/images/google.png"
+              src="/images/google-logo.png"
               alt=""
               width={20}
               height={20}
               className="object-contain"
             />
 
-            {isGoogleLoading
-              ? "Connecting..."
-              : "Continue with Google"}
+            {isGoogleLoading ? "Connecting..." : "Continue with Google"}
           </button>
 
           {/* Register Link */}
@@ -306,8 +281,7 @@ export default function Login({
 
         {/* Footer */}
         <p className="mt-6 text-center text-xs text-[#98A2B3]">
-          © {new Date().getFullYear()} ProjectHub.
-          All rights reserved.
+          © {new Date().getFullYear()} ProjectHub. All rights reserved.
         </p>
       </div>
     </main>

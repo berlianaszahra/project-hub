@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -9,10 +8,7 @@ type KatalogSidebarProps = {
   onClose: () => void;
 };
 
-export default function KatalogSidebar({
-  open,
-  onClose,
-}: KatalogSidebarProps) {
+export default function KatalogSidebar({ open, onClose }: KatalogSidebarProps) {
   return (
     <>
       {/* Mobile Overlay */}
@@ -44,10 +40,7 @@ export default function KatalogSidebar({
         </div>
 
         {/* Navigation */}
-        <nav
-          aria-label="Navigasi katalog"
-          className="flex-1 px-4 py-7"
-        >
+        <nav aria-label="Navigasi katalog" className="flex-1 px-4 py-7">
           <p className="px-3 text-[11px] font-semibold tracking-[0.12em] text-[#717784]">
             EKSPLORASI
           </p>
@@ -59,13 +52,9 @@ export default function KatalogSidebar({
             onClick={onClose}
             className="mt-4 flex items-center gap-3 rounded-lg bg-[#EAF4FF] px-3 py-2.5 text-sm font-medium text-[#005DA9]"
           >
-            <span
-              aria-hidden="true"
-              className="text-lg"
-            >
+            <span aria-hidden="true" className="text-lg">
               ▦
             </span>
-
             Katalog Project
           </Link>
         </nav>
@@ -73,7 +62,6 @@ export default function KatalogSidebar({
         {/* User Profile */}
         <div className="border-t border-[#EAE7E7] p-4">
           <div className="flex items-center gap-3 rounded-lg px-2 py-2">
-
             {/* Avatar */}
             <div className="flex size-9 items-center justify-center rounded-full bg-[#D4E3FF] text-sm font-semibold text-[#001C39]">
               N
@@ -81,13 +69,9 @@ export default function KatalogSidebar({
 
             {/* User Information */}
             <div>
-              <p className="text-sm font-medium text-[#1C1B1B]">
-                Nadia
-              </p>
+              <p className="text-sm font-medium text-[#1C1B1B]">Nadia</p>
 
-              <p className="text-xs text-[#717784]">
-                Profil contoh desain
-              </p>
+              <p className="text-xs text-[#717784]">Profil contoh desain</p>
             </div>
           </div>
         </div>

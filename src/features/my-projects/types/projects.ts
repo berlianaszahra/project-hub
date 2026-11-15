@@ -1,15 +1,8 @@
 export type MyProjectRole = "Lead" | "Member";
 
-export type MyProjectStatus =
-  | "Recruiting"
-  | "Aktif"
-  | "Selesai"
-  | "Ditunda";
+export type MyProjectStatus = "Recruiting" | "Aktif" | "Selesai" | "Ditunda";
 
-export type ApplicationStatus =
-  | "Menunggu Review"
-  | "Diterima"
-  | "Ditolak";
+export type ApplicationStatus = "Menunggu Review" | "Diterima" | "Ditolak";
 
 export interface BaseMyProject {
   id: string;

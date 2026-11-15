@@ -1,4 +1,3 @@
-
 import { ArrowRight, CheckCircle2, Users } from "lucide-react";
 
 import type { JoinedProject } from "../types/projects";
@@ -14,14 +13,10 @@ export default function JoinedProjectCard({
   onOpen,
   onViewTasks,
 }: JoinedProjectCardProps) {
-  const progress = Math.min(
-    100,
-    Math.max(0, project.progress),
-  );
+  const progress = Math.min(100, Math.max(0, project.progress));
 
   return (
     <article className="overflow-hidden rounded-xl border border-[#EAE7E7] bg-white shadow-sm">
-
       <div className="p-5 sm:p-6">
         {/* Project Header */}
         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -129,9 +124,7 @@ export default function JoinedProjectCard({
             ))}
           </div>
 
-          <p className="text-xs text-[#717784]">
-            Kolaborasi bersama tim
-          </p>
+          <p className="text-xs text-[#717784]">Kolaborasi bersama tim</p>
         </div>
       </div>
 

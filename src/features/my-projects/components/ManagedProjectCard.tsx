@@ -1,10 +1,4 @@
-
-import {
-  ArrowRight,
-  ClipboardList,
-  Users,
-  UserPlus,
-} from "lucide-react";
+import { ArrowRight, ClipboardList, Users, UserPlus } from "lucide-react";
 
 import type { ManagedProject } from "../types/projects";
 
@@ -21,7 +15,6 @@ export default function ManagedProjectCard({
 }: ManagedProjectCardProps) {
   return (
     <article className="relative overflow-hidden rounded-xl border border-[#EAE7E7] bg-white shadow-sm">
-
       {/* Decorative Background */}
       <div
         aria-hidden="true"
@@ -29,7 +22,6 @@ export default function ManagedProjectCard({
       />
 
       <div className="relative p-5 sm:p-6">
-
         {/* Header */}
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -81,11 +73,8 @@ export default function ManagedProjectCard({
         {/* Metrics */}
         <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-3">
           {project.metrics.map((metric, index) => {
-            const MetricIcon = [
-              Users,
-              UserPlus,
-              ClipboardList,
-            ][index] ?? ClipboardList;
+            const MetricIcon =
+              [Users, UserPlus, ClipboardList][index] ?? ClipboardList;
 
             const pending = index === 2;
 
@@ -93,9 +82,7 @@ export default function ManagedProjectCard({
               <div
                 key={metric.label}
                 className={`flex min-w-0 items-center gap-2 rounded-lg p-2 ${
-                  pending
-                    ? "bg-[#F9DD9E]/30"
-                    : "bg-[#F6F3F2]"
+                  pending ? "bg-[#F9DD9E]/30" : "bg-[#F6F3F2]"
                 }`}
               >
                 <div
@@ -109,19 +96,19 @@ export default function ManagedProjectCard({
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <p className={`truncate text-xs font-semibold ${
-                    pending
-                      ? "text-[#574414]"
-                      : "text-[#1C1B1B]"
-                  }`}>
+                  <p
+                    className={`truncate text-xs font-semibold ${
+                      pending ? "text-[#574414]" : "text-[#1C1B1B]"
+                    }`}
+                  >
                     {metric.label}: {metric.value}
                   </p>
 
-                  <p className={`truncate text-[11px] ${
-                    pending
-                      ? "text-[#574414]"
-                      : "text-[#414752]"
-                  }`}>
+                  <p
+                    className={`truncate text-[11px] ${
+                      pending ? "text-[#574414]" : "text-[#414752]"
+                    }`}
+                  >
                     {metric.description}
                   </p>
                 </div>

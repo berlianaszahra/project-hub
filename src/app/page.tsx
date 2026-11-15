@@ -1,8 +1,9 @@
-export default function Home() {
+import LandingPageContainer from "@/features/landing-page/container/LandingPageContainer";
 
-    return (
-        <main>
-            
-        </main>
-    )
+export default function Home() {
+  return (
+    <main>
+      <LandingPageContainer />
+    </main>
+  );
 }

@@ -1,4 +1,3 @@
-
 export const projectCategories = [
   { value: "web", label: "Web Development" },
   { value: "mobile", label: "Mobile Development" },

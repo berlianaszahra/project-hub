@@ -1,9 +1,4 @@
-
-import {
-  ArrowRight,
-  Clock3,
-  FileClock,
-} from "lucide-react";
+import { ArrowRight, Clock3, FileClock } from "lucide-react";
 
 import type { ProjectApplication } from "../types/projects";
 
@@ -12,10 +7,7 @@ type ApplicationStatusCardProps = {
   onViewApplications?: () => void;
 };
 
-const statusStyles: Record<
-  ProjectApplication["status"],
-  string
-> = {
+const statusStyles: Record<ProjectApplication["status"], string> = {
   "Menunggu Review": "bg-[#F9DD9E] text-[#574414]",
   Diterima: "bg-[#A3F2D7] text-[#005140]",
   Ditolak: "bg-[#FCE8E6] text-[#B42318]",
@@ -82,7 +74,8 @@ export default function ApplicationStatusCard({
 
               <p className="mt-1 flex items-center gap-1.5 text-[11px] text-[#717784]">
                 <Clock3 size={12} aria-hidden="true" />
-                Diajukan pada {new Intl.DateTimeFormat("id-ID", {
+                Diajukan pada{" "}
+                {new Intl.DateTimeFormat("id-ID", {
                   day: "numeric",
                   month: "long",
                   year: "numeric",

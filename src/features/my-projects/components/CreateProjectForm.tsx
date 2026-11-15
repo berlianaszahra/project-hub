@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -12,22 +11,16 @@ import {
   type CreateProjectFormData,
 } from "../schemas/project.schema";
 
-import {
-  projectCategories,
-  technologyOptions,
-} from "../data/projectOptions";
+import { projectCategories, technologyOptions } from "../data/projectOptions";
 
 type CreateProjectFormProps = {
-  onCreateProject?: (
-    data: CreateProjectFormData,
-  ) => Promise<void> | void;
+  onCreateProject?: (data: CreateProjectFormData) => Promise<void> | void;
 };
 
 const inputClass =
   "h-11 w-full rounded-lg border border-[#DCE2E9] bg-white px-3.5 text-sm text-[#1C1B1B] outline-none transition placeholder:text-[#A3AAB5] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/10";
 
-const labelClass =
-  "mb-2 block text-sm font-medium text-[#344054]";
+const labelClass = "mb-2 block text-sm font-medium text-[#344054]";
 
 export default function CreateProjectForm({
   onCreateProject,
@@ -98,8 +91,8 @@ export default function CreateProjectForm({
         </h1>
 
         <p className="mt-2 text-sm leading-6 text-[#414752]">
-          Lengkapi informasi project untuk memulai
-          kolaborasi bersama komunitas BCC.
+          Lengkapi informasi project untuk memulai kolaborasi bersama komunitas
+          BCC.
         </p>
       </div>
 
@@ -134,13 +127,9 @@ export default function CreateProjectForm({
               placeholder="Contoh: CampusConnect"
               disabled={isSubmitting}
               aria-invalid={!!errors.name}
-              aria-describedby={
-                errors.name ? "name-error" : undefined
-              }
+              aria-describedby={errors.name ? "name-error" : undefined}
               {...register("name")}
-              className={`${inputClass} ${
-                errors.name ? "border-red-500" : ""
-              }`}
+              className={`${inputClass} ${errors.name ? "border-red-500" : ""}`}
             />
 
             {errors.name && (
@@ -168,9 +157,7 @@ export default function CreateProjectForm({
               disabled={isSubmitting}
               aria-invalid={!!errors.description}
               aria-describedby={
-                errors.description
-                  ? "description-error"
-                  : undefined
+                errors.description ? "description-error" : undefined
               }
               {...register("description")}
               className={`w-full resize-y rounded-lg border border-[#DCE2E9] bg-white px-3.5 py-3 text-sm leading-6 text-[#1C1B1B] outline-none transition placeholder:text-[#A3AAB5] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/10 ${
@@ -212,10 +199,7 @@ export default function CreateProjectForm({
               <option value="">Pilih kategori project</option>
 
               {projectCategories.map((category) => (
-                <option
-                  key={category.value}
-                  value={category.value}
-                >
+                <option key={category.value} value={category.value}>
                   {category.label}
                 </option>
               ))}
@@ -262,9 +246,7 @@ export default function CreateProjectForm({
                         aria-pressed={selected}
                         onClick={() => {
                           const next = selected
-                            ? field.value.filter(
-                                (item) => item !== tech,
-                              )
+                            ? field.value.filter((item) => item !== tech)
                             : [...field.value, tech];
 
                           field.onChange(next);
@@ -276,9 +258,7 @@ export default function CreateProjectForm({
                             : "border-[#EAE7E7] bg-white text-[#414752] hover:border-[#005DA9]/40"
                         }`}
                       >
-                        {selected && (
-                          <Check size={13} aria-hidden="true" />
-                        )}
+                        {selected && <Check size={13} aria-hidden="true" />}
                         {tech}
                       </button>
                     );
@@ -353,8 +333,8 @@ export default function CreateProjectForm({
                 </span>
 
                 <span className="mt-1 block text-xs leading-5 text-[#717784]">
-                  Izinkan anggota komunitas untuk mengajukan
-                  permintaan bergabung ke project ini.
+                  Izinkan anggota komunitas untuk mengajukan permintaan
+                  bergabung ke project ini.
                 </span>
               </span>
             </label>
@@ -395,9 +375,7 @@ export default function CreateProjectForm({
               className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#005DA9] px-5 text-sm font-medium text-white transition hover:bg-[#004B89] disabled:cursor-not-allowed disabled:opacity-60"
             >
               <Plus size={16} aria-hidden="true" />
-              {isSubmitting
-                ? "Menyimpan..."
-                : "Buat Project"}
+              {isSubmitting ? "Menyimpan..." : "Buat Project"}
             </button>
           </div>
         </form>

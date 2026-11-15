@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 export const createProjectSchema = z.object({
@@ -16,9 +15,7 @@ export const createProjectSchema = z.object({
 
   category: z.string().min(1, "Pilih kategori project."),
 
-  technologies: z
-    .array(z.string())
-    .min(1, "Pilih minimal satu teknologi."),
+  technologies: z.array(z.string()).min(1, "Pilih minimal satu teknologi."),
 
   maxMembers: z.coerce
     .number<number>()
@@ -29,6 +26,4 @@ export const createProjectSchema = z.object({
   isRecruiting: z.boolean(),
 });
 
-export type CreateProjectFormData = z.infer<
-  typeof createProjectSchema
->;
+export type CreateProjectFormData = z.infer<typeof createProjectSchema>;

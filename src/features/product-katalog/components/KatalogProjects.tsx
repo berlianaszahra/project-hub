@@ -1,11 +1,9 @@
-
 "use client";
 
 import { useMemo, useState } from "react";
 
 import { projects as sampleProjects } from "../data/project";
 import type { Project, ProjectStatus } from "../types/project";
-
 
 import KatalogHeader from "./KatalogHeader";
 import KatalogSidebar from "./KatalogSidebar";
@@ -34,8 +32,7 @@ export default function KatalogProjects({
 }: Props) {
   const [search, setSearch] = useState("");
   const [technology, setTechnology] = useState("Semua Teknologi");
-  const [status, setStatus] =
-    useState<StatusFilter>("Semua Project");
+  const [status, setStatus] = useState<StatusFilter>("Semua Project");
   const [sort, setSort] = useState("terbaru");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -43,9 +40,7 @@ export default function KatalogProjects({
   const technologies = useMemo(
     () =>
       Array.from(
-        new Set(
-          projects.flatMap((project) => project.technologies),
-        ),
+        new Set(projects.flatMap((project) => project.technologies)),
       ).sort(),
     [projects],
   );
@@ -71,14 +66,9 @@ export default function KatalogProjects({
           project.technologies.includes(technology);
 
         const matchesStatus =
-          status === "Semua Project" ||
-          project.status === status;
+          status === "Semua Project" || project.status === status;
 
-        return (
-          matchesSearch &&
-          matchesTechnology &&
-          matchesStatus
-        );
+        return matchesSearch && matchesTechnology && matchesStatus;
       })
       .sort((a, b) => {
         if (sort === "nama") {
@@ -110,24 +100,17 @@ export default function KatalogProjects({
 
       {/* Main Content */}
       <div className="min-w-0 lg:pl-60">
-        <KatalogHeader
-          onMenuClick={() => setSidebarOpen(true)}
-        />
+        <KatalogHeader onMenuClick={() => setSidebarOpen(true)} />
 
         <main className="mx-auto w-full max-w-[1120px] px-5 pb-12 pt-8 sm:px-6 lg:pt-10">
-
           {/* Page Heading */}
           <div className="mb-6 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
             <div>
               {/* Breadcrumb */}
               <div className="mb-2 flex items-center gap-1 text-xs font-medium">
-                <span className="text-[#414752]">
-                  Eksplorasi
-                </span>
+                <span className="text-[#414752]">Eksplorasi</span>
                 <span className="text-[#C0C7D4]">/</span>
-                <span className="text-[#005DA9]">
-                  Katalog Project
-                </span>
+                <span className="text-[#005DA9]">Katalog Project</span>
               </div>
 
               <h1 className="text-[30px] font-bold leading-tight tracking-[-0.8px] sm:text-[32px]">
@@ -157,7 +140,6 @@ export default function KatalogProjects({
             className="mb-6 rounded-xl bg-[#F6F3F2] p-4"
           >
             <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
-
               {/* Search */}
               <div className="relative w-full md:max-w-[448px]">
                 <span
@@ -170,9 +152,7 @@ export default function KatalogProjects({
                 <input
                   type="search"
                   value={search}
-                  onChange={(event) =>
-                    setSearch(event.target.value)
-                  }
+                  onChange={(event) => setSearch(event.target.value)}
                   aria-label="Cari project"
                   placeholder="Cari nama project atau teknologi..."
                   className="h-9 w-full rounded-lg border border-transparent bg-white pl-9 pr-3 text-sm text-[#1C1B1B] outline-none placeholder:text-[#717784] focus:border-[#0076D3]"
@@ -181,19 +161,14 @@ export default function KatalogProjects({
 
               {/* Dropdown Filters */}
               <div className="flex flex-wrap gap-2">
-
                 {/* Technology */}
                 <select
                   aria-label="Filter teknologi"
                   value={technology}
-                  onChange={(event) =>
-                    setTechnology(event.target.value)
-                  }
+                  onChange={(event) => setTechnology(event.target.value)}
                   className="h-9 max-w-full rounded-lg bg-white px-3 text-sm text-[#1C1B1B] outline-none focus:ring-2 focus:ring-[#0076D3]/30"
                 >
-                  <option value="Semua Teknologi">
-                    Semua Teknologi
-                  </option>
+                  <option value="Semua Teknologi">Semua Teknologi</option>
 
                   {technologies.map((item) => (
                     <option key={item} value={item}>
@@ -206,9 +181,7 @@ export default function KatalogProjects({
                 <select
                   aria-label="Urutkan project"
                   value={sort}
-                  onChange={(event) =>
-                    setSort(event.target.value)
-                  }
+                  onChange={(event) => setSort(event.target.value)}
                   className="h-9 rounded-lg bg-white px-3 text-sm text-[#1C1B1B] outline-none focus:ring-2 focus:ring-[#0076D3]/30"
                 >
                   <option value="terbaru">Terbaru</option>
@@ -225,10 +198,8 @@ export default function KatalogProjects({
                   const count =
                     item === "Semua Project"
                       ? projects.length
-                      : projects.filter(
-                          (project) =>
-                            project.status === item,
-                        ).length;
+                      : projects.filter((project) => project.status === item)
+                          .length;
 
                   return (
                     <button
@@ -273,9 +244,7 @@ export default function KatalogProjects({
             </div>
           ) : (
             <div className="rounded-xl border border-dashed border-[#D9D4D3] px-6 py-16 text-center">
-              <h2 className="text-lg font-semibold">
-                Project tidak ditemukan
-              </h2>
+              <h2 className="text-lg font-semibold">Project tidak ditemukan</h2>
 
               <p className="mt-2 text-sm text-[#717784]">
                 Coba kata kunci atau filter lainnya.
@@ -298,8 +267,8 @@ export default function KatalogProjects({
             </h2>
 
             <p className="mt-1 text-sm leading-6 text-[#414752]">
-              Jelajahi project, temukan teknologi yang menarik,
-              dan ikuti perkembangan karya komunitas BCC.
+              Jelajahi project, temukan teknologi yang menarik, dan ikuti
+              perkembangan karya komunitas BCC.
             </p>
           </aside>
         </main>

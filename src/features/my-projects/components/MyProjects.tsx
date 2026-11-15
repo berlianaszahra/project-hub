@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -60,9 +59,7 @@ export default function MyProjects({
       {/* Main Content */}
       <div className="min-w-0 lg:pl-60">
         {/* Shared Header */}
-        <KatalogHeader
-          onMenuClick={() => setSidebarOpen(true)}
-        />
+        <KatalogHeader onMenuClick={() => setSidebarOpen(true)} />
 
         <main className="mx-auto w-full max-w-[1120px] px-5 pb-12 pt-8 sm:px-6 lg:pt-10">
           {/* Page Header */}
@@ -80,9 +77,7 @@ export default function MyProjects({
                   Eksplorasi
                 </Link>
 
-                <span className="text-[#C0C7D4]">
-                  /
-                </span>
+                <span className="text-[#C0C7D4]">/</span>
 
                 <span
                   aria-current="page"

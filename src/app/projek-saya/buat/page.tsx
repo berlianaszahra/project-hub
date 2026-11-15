@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -19,9 +18,7 @@ export default function CreateProjectPage() {
       />
 
       <div className="min-w-0 lg:pl-60">
-        <KatalogHeader
-          onMenuClick={() => setSidebarOpen(true)}
-        />
+        <KatalogHeader onMenuClick={() => setSidebarOpen(true)} />
 
         <main className="mx-auto w-full max-w-[1120px] px-5 py-10 sm:px-6">
           <CreateProjectForm />

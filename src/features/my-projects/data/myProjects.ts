@@ -12,12 +12,7 @@ export const managedProject: ManagedProject[] = [
     role: "Lead",
     description:
       "Platform komunitas untuk kolaborasi dan berbagi referensi akademik antar mahasiswa. Menghubungkan ide, sumber belajar, dan anggota komunitas dalam satu ruang.",
-    technologies: [
-      "React",
-      "Tailwind CSS",
-      "Node.js",
-      "PostgreSQL",
-    ],
+    technologies: ["React", "Tailwind CSS", "Node.js", "PostgreSQL"],
     status: "Recruiting",
     updatedAt: "2026-11-12",
     memberCount: 8,
@@ -51,11 +46,7 @@ export const joinedProject: JoinedProject[] = [
     role: "Member",
     description:
       "Aplikasi pemantauan kebiasaan ramah lingkungan dan jejak karbon harian untuk mendukung gaya hidup berkelanjutan.",
-    technologies: [
-      "Flutter",
-      "Firebase",
-      "Dart",
-    ],
+    technologies: ["Flutter", "Firebase", "Dart"],
     status: "Aktif",
     updatedAt: "2026-11-10",
     leadName: "Farhan",
