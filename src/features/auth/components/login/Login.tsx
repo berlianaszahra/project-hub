@@ -97,7 +97,7 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
         <form onSubmit={handleSubmit} noValidate={false}>
           <div>
             <label htmlFor="login-email" className="mb-1.5 block text-xs font-medium leading-4 tracking-[0.12px] text-[#414752]">Email</label>
-            <input id="login-email" type="email" name="email" autoComplete="email" required placeholder="nadia@bcc.id" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11 w-full rounded-lg border border-[#E9E9E7] bg-white px-3 text-sm text-[#1C1B1B] outline-none placeholder:text-[#717784] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/15" />
+            <input id="login-email" type="email" name="email" autoComplete="email" required placeholder="berlian@bcc.id" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11 w-full rounded-lg border border-[#E9E9E7] bg-white px-3 text-sm text-[#1C1B1B] outline-none placeholder:text-[#717784] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/15" />
           </div>
 
           <div className="mt-4">
@@ -106,7 +106,7 @@ export default function Login({ onLogin, onGoogleLogin }: LoginProps) {
               <Link href="/forgot-password" className="text-[11px] leading-[14px] tracking-[0.22px] text-[#005DA9] hover:underline">Lupa password?</Link>
             </div>
             <div className="relative">
-              <input id="login-password" type={showPassword ? "text" : "password"} name="password" autoComplete="current-password" required placeholder="••••••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="h-11 w-full rounded-lg border border-[#E9E9E7] bg-white py-2.5 pl-3 pr-11 text-sm text-[#1C1B1B] outline-none placeholder:text-[#717784] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/15" />
+              <input id="login-password" type={showPassword ? "text" : "password"} name="password" autoComplete="current-password" required placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="h-11 w-full rounded-lg border border-[#E9E9E7] bg-white py-2.5 pl-3 pr-11 text-sm text-[#1C1B1B] outline-none placeholder:text-[#717784] focus:border-[#005DA9] focus:ring-2 focus:ring-[#005DA9]/15" />
               <button type="button" onClick={() => setShowPassword((v) => !v)} aria-label={showPassword ? "Sembunyikan sandi" : "Tampilkan sandi"} aria-pressed={showPassword} className="absolute right-2.5 top-2 flex h-7 w-7 items-center justify-center rounded text-[#717784] hover:bg-[#F6F3F2] focus-visible:outline-2 focus-visible:outline-[#005DA9]">
                 <EyeIcon hidden={showPassword} />
               </button>
