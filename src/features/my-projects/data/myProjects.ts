@@ -1,6 +1,6 @@
 import type {
-  ManagedProject,
   JoinedProject,
+  ManagedProject,
   ProjectApplication,
 } from "../types/projects";
 
@@ -15,23 +15,23 @@ export const managedProject: ManagedProject[] = [
     technologies: ["React", "Tailwind CSS", "Node.js", "PostgreSQL"],
     status: "Recruiting",
     updatedAt: "2026-11-12",
-    memberCount: 8,
-    memberCapacity: 12,
-    pendingApplicants: 3,
+    memberCount: 3,
+    memberCapacity: 5,
+    pendingApplicants: 4,
     metrics: [
       {
         label: "Anggota Tim",
-        value: "8 / 12",
+        value: "3 / 5",
         description: "Anggota aktif",
       },
       {
         label: "Posisi Terbuka",
-        value: "4",
+        value: "2",
         description: "Slot tersedia",
       },
       {
         label: "Perlu Review",
-        value: "3",
+        value: "4",
         description: "Pengajuan menunggu",
       },
     ],
@@ -49,12 +49,12 @@ export const joinedProject: JoinedProject[] = [
     technologies: ["Flutter", "Firebase", "Dart"],
     status: "Aktif",
     updatedAt: "2026-11-10",
-    leadName: "Farhan",
-    memberCount: 6,
+    leadName: "Dimas Aditya",
+    memberCount: 4,
     progress: 65,
     taskCompleted: 13,
     taskTotal: 20,
-    teamInitials: ["F", "N", "R", "A"],
+    teamInitials: ["D", "N", "K", "A"],
   },
 ];
 

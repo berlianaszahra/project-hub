@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Project } from "../types/project";
 
 type ProjectCardProps = {
@@ -21,7 +22,7 @@ export default function ProjectCard({ project, onOpen }: ProjectCardProps) {
   }).format(new Date(`${project.updatedAt}T00:00:00Z`));
 
   return (
-    <article className="flex min-h-[303px] flex-col justify-between rounded-xl border border-[#EAE7E7] bg-white p-6 transition-shadow hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
+    <article className="relative flex min-h-[303px] flex-col justify-between rounded-xl border border-[#EAE7E7] bg-white p-6 transition-shadow hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)]">
       {/* Project Information */}
       <div>
         {/* Icon and Status */}
@@ -91,12 +92,19 @@ export default function ProjectCard({ project, onOpen }: ProjectCardProps) {
             <button
               type="button"
               onClick={() => onOpen(project)}
-              className="font-medium text-[#005DA9] hover:underline"
+              aria-label={`Lihat detail ${project.name}`}
+              className="font-medium text-[#005DA9] after:absolute after:inset-0 after:rounded-xl hover:underline focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-[#0076D3] focus-visible:after:ring-offset-2"
             >
               Lihat Detail →
             </button>
           ) : (
-            <span className="text-[#717784]">Detail belum tersedia</span>
+            <Link
+              href={`/katalog/${project.id}`}
+              aria-label={`Lihat detail ${project.name}`}
+              className="font-medium text-[#005DA9] after:absolute after:inset-0 after:rounded-xl hover:underline focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-[#0076D3] focus-visible:after:ring-offset-2"
+            >
+              Lihat Detail →
+            </Link>
           )}
         </div>
       </div>
