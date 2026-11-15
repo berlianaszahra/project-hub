@@ -1,11 +1,12 @@
 import "server-only";
 
 import axios from "axios";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 import { loginSchema } from "../schemas/login.schema";
 import { registerSchema } from "../schemas/register.schema";
+import { sessionCookieName, sessionCookieOptions } from "./session-cookie";
 
 const loginResponseSchema = z.object({
   success: z.literal(true),
@@ -13,7 +14,8 @@ const loginResponseSchema = z.object({
 });
 
 const registerResponseSchema = z.object({ success: z.literal(true) });
-const validationErrorsSchema = z.object({
+const upstreamErrorSchema = z.object({
+  message: z.string().optional(),
   errors: z
     .object({
       name: z.string().max(200).optional(),
@@ -35,6 +37,15 @@ function reply(message: string, status: number) {
 function upstreamFailure(error: unknown, action: AuthAction) {
   if (axios.isAxiosError(error)) {
     const status = error.response?.status;
+    const payload = upstreamErrorSchema.safeParse(error.response?.data).data;
+
+    if (
+      action === "login" &&
+      status === 404 &&
+      payload?.message === "User tidak ditemukan"
+    ) {
+      return reply("Email atau password salah.", 401);
+    }
 
     if (status === 429) {
       return reply("Terlalu banyak percobaan. Coba lagi sebentar.", 429);
@@ -51,8 +62,7 @@ function upstreamFailure(error: unknown, action: AuthAction) {
     }
 
     if (status === 400 || status === 422) {
-      const parsed = validationErrorsSchema.safeParse(error.response?.data);
-      const errors = parsed.data?.errors;
+      const errors = payload?.errors;
       const fieldMessage =
         action === "register"
           ? errors?.name || errors?.email || errors?.password
@@ -65,6 +75,12 @@ function upstreamFailure(error: unknown, action: AuthAction) {
         status,
       );
     }
+
+    console.error("[auth] Backend request failed", {
+      action,
+      status,
+      code: error.code,
+    });
   }
 
   return reply(
@@ -73,14 +89,24 @@ function upstreamFailure(error: unknown, action: AuthAction) {
   );
 }
 
-export async function handleAuth(request: Request, action: AuthAction) {
-  const mediaType = request.headers
-    .get("content-type")
-    ?.split(";")[0]
-    ?.trim()
-    .toLowerCase();
+function usesJson(request: Request) {
+  return (
+    request.headers.get("content-type")?.split(";")[0]?.trim().toLowerCase() ===
+    "application/json"
+  );
+}
 
-  if (mediaType !== "application/json") {
+function authBackend() {
+  return axios.create({
+    baseURL: process.env.API_BASE_URL?.trim() || "http://localhost:8080/api/v1",
+    timeout: 8_000,
+    maxRedirects: 0,
+    headers: { Accept: "application/json" },
+  });
+}
+
+export async function handleAuth(request: Request, action: AuthAction) {
+  if (!usesJson(request)) {
     return reply("Permintaan harus memakai format JSON.", 415);
   }
 
@@ -92,16 +118,11 @@ export async function handleAuth(request: Request, action: AuthAction) {
     return reply(input.error.issues[0]?.message ?? "Data tidak valid.", 400);
   }
 
-  const baseURL =
-    process.env.API_BASE_URL?.trim() || "http://localhost:8080/api/v1";
-
   try {
-    const { data } = await axios.post<unknown>(`/auth/${action}`, input.data, {
-      baseURL,
-      timeout: 8_000,
-      maxRedirects: 0,
-      headers: { Accept: "application/json" },
-    });
+    const { data } = await authBackend().post<unknown>(
+      `/auth/${action}`,
+      input.data,
+    );
 
     if (action === "register") {
       return registerResponseSchema.safeParse(data).success
@@ -116,17 +137,41 @@ export async function handleAuth(request: Request, action: AuthAction) {
 
     const response = reply("Login berhasil.", 200);
     response.cookies.set(
-      "projecthub_access_token",
+      sessionCookieName,
       login.data.data.access_token,
-      {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-      },
+      sessionCookieOptions,
     );
     return response;
   } catch (error) {
     return upstreamFailure(error, action);
   }
+}
+
+export async function handleLogout(request: NextRequest) {
+  if (!usesJson(request)) {
+    return reply("Permintaan harus memakai format JSON.", 415);
+  }
+
+  const token = request.cookies.get(sessionCookieName)?.value;
+  if (token) {
+    try {
+      await authBackend().post("/auth/logout", undefined, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status !== 401) {
+        console.error("[auth] Backend logout failed", {
+          status: error.response?.status,
+          code: error.code,
+        });
+      }
+    }
+  }
+
+  const response = reply("Sesi browser berhasil diakhiri.", 200);
+  response.cookies.set(sessionCookieName, "", {
+    ...sessionCookieOptions,
+    maxAge: 0,
+  });
+  return response;
 }

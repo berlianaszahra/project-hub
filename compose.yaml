@@ -3,7 +3,9 @@ services:
     image: ${APP_IMAGE:-projecthub-frontend:local}
     restart: unless-stopped
     environment:
-      API_BASE_URL: ${API_BASE_URL:-https://group1-be.bccdev.id/api/v1}
+      API_BASE_URL: ${API_BASE_URL:-http://host.docker.internal:8080/api/v1}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
     ports:
       - "80:3000"

@@ -9,6 +9,7 @@ import { sampleProfile } from "../data/profileData";
 
 import type { UpdateProfileHandler, UserProfile } from "../types/profile";
 import AccountOverview from "./AccountOverview";
+import LogoutCard from "./LogoutCard";
 import ProfileForm from "./ProfileForm";
 import ProfileTips from "./ProfileTips";
 
@@ -91,6 +92,7 @@ export default function ProfilePage({
               <div className="space-y-4">
                 <AccountOverview profile={profile} />
                 <ProfileTips />
+                <LogoutCard />
               </div>
             </div>
           </div>
