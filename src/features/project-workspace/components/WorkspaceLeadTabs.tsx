@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import ProjectSettingsPage from "@/features/project-settings/components/ProjectSettingsPage";
+import { settingsFromWorkspace } from "@/features/project-settings/data/workspaceSettings";
 import type { LeadWorkspace, WorkspaceTab } from "../types/workspace";
 export default function WorkspaceLeadTabs({
   workspace: w,
@@ -11,7 +13,7 @@ export default function WorkspaceLeadTabs({
 }) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
-  const [notice, setNotice] = useState("");
+  const settingsProject = useMemo(() => settingsFromWorkspace(w), [w]);
   const [selected, setSelected] = useState<string | null>(null);
   const applicant = w.applicants.find((a) => a.id === selected);
   if (tab === "posisi")
@@ -49,75 +51,14 @@ export default function WorkspaceLeadTabs({
     );
   if (tab === "pengaturan")
     return (
-      <>
-        <h1 className="text-2xl font-semibold">Pengaturan Proyek</h1>
-        <form
-          className="mt-6 max-w-2xl space-y-5 rounded-xl bg-white p-6"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setNotice(
-              "Layanan pengaturan proyek belum terhubung. Perubahan belum disimpan.",
-            );
-          }}
-        >
-          <div>
-            <label htmlFor="workspace-name" className="mb-2 block text-sm">
-              Nama Proyek
-            </label>
-            <input
-              id="workspace-name"
-              required
-              defaultValue={w.name}
-              className="w-full rounded border border-[#EAE7E7] p-3 text-sm"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="workspace-description"
-              className="mb-2 block text-sm"
-            >
-              Deskripsi
-            </label>
-            <textarea
-              id="workspace-description"
-              required
-              defaultValue={w.description}
-              rows={4}
-              className="w-full rounded border border-[#EAE7E7] p-3 text-sm"
-            />
-          </div>
-          <div>
-            <label htmlFor="workspace-status" className="mb-2 block text-sm">
-              Status Proyek
-            </label>
-            <select
-              id="workspace-status"
-              defaultValue={w.status}
-              className="w-full rounded border border-[#EAE7E7] p-3 text-sm"
-            >
-              <option value="Recruiting">Recruiting</option>
-              <option value="Active">Active</option>
-              <option value="Completed" disabled={w.applicants.length > 0}>
-                Completed{" "}
-                {w.applicants.length > 0
-                  ? "— selesaikan seleksi terlebih dahulu"
-                  : ""}
-              </option>
-            </select>
-          </div>
-          <button
-            type="submit"
-            className="rounded bg-[#005DA9] px-4 py-2 text-sm text-white"
-          >
-            Simpan Perubahan
-          </button>
-          {notice && (
-            <p role="alert" className="text-xs text-[#717784]">
-              {notice}
-            </p>
-          )}
-        </form>
-      </>
+      <Suspense fallback={<output>Memuat pengaturan proyek…</output>}>
+        <ProjectSettingsPage
+          key={w.id}
+          projectId={w.id}
+          pendingApplicationCount={w.applicants.length}
+          project={settingsProject}
+        />
+      </Suspense>
     );
   const filtered = w.applicants.filter(
     (a) =>
