@@ -30,6 +30,7 @@ export default function KatalogHeader({ onMenuClick }: KatalogHeaderProps) {
         {/* User Avatar */}
         <div
           className="flex size-8 items-center justify-center rounded-full bg-[#D4E3FF] text-xs font-semibold text-[#001C39]"
+          role="img"
           aria-label="Akun contoh Nadia"
         >
           N

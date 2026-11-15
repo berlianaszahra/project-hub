@@ -10,8 +10,8 @@ import {
 } from "../types/workspace";
 import LeadOverview from "./LeadOverview";
 import MemberOverview from "./MemberOverview";
+import ProjectMembersPage from "./ProjectMembersPage";
 import WorkspaceLeadTabs from "./WorkspaceLeadTabs";
-import WorkspaceMembers from "./WorkspaceMembers";
 import WorkspaceSidebar from "./WorkspaceSidebar";
 export default function ProjectWorkspace({
   workspace,
@@ -98,18 +98,7 @@ export default function ProjectWorkspace({
               />
             )
           ) : tab === "anggota" ? (
-            <>
-              <h1 className="mb-6 text-2xl font-semibold">
-                Anggota Tim {workspace.name}
-              </h1>
-              <WorkspaceMembers members={workspace.members} />
-              {workspace.role === "Project Lead" && (
-                <p className="mt-4 text-xs text-[#717784]">
-                  Perubahan role, posisi, dan keanggotaan akan tersedia setelah
-                  layanan backend terhubung.
-                </p>
-              )}
-            </>
+            <ProjectMembersPage workspace={workspace} />
           ) : workspace.role === "Project Lead" ? (
             <WorkspaceLeadTabs workspace={workspace} tab={tab} />
           ) : null}

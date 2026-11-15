@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { type FormEvent, useState } from "react";
 
 type RegisterData = {
   fullName: string;
@@ -220,12 +220,9 @@ export default function Register({
 
             {/* Success */}
             {success && (
-              <p
-                role="status"
-                className="rounded-lg bg-green-50 px-3 py-2.5 text-sm text-green-700"
-              >
+              <output className="rounded-lg bg-green-50 px-3 py-2.5 text-sm text-green-700">
                 Pendaftaran berhasil. Silakan masuk menggunakan akun Anda.
-              </p>
+              </output>
             )}
 
             {/* Submit */}

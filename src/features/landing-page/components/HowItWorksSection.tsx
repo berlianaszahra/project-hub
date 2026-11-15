@@ -47,10 +47,7 @@ export default function HowItWorksSection() {
           </p>
         </header>
 
-        <ol
-          role="list"
-          className="mt-10 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6"
-        >
+        <ol className="mt-10 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
           {steps.map((step, index) => (
             <li key={step.title} className="rounded-xl bg-secondary-bg p-6">
               <span

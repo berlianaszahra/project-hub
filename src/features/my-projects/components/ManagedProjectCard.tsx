@@ -1,4 +1,5 @@
 import { ArrowRight, ClipboardList, UserPlus, Users } from "lucide-react";
+import Link from "next/link";
 
 import type { ManagedProject } from "../types/projects";
 
@@ -31,7 +32,12 @@ export default function ManagedProjectCard({
 
             <div>
               <h3 className="text-[22px] font-semibold leading-7 tracking-tight text-[#1C1B1B]">
-                {project.name}
+                <Link
+                  href={`/projek-saya/${project.id}`}
+                  className="hover:text-[#005DA9]"
+                >
+                  {project.name}
+                </Link>
               </h3>
 
               <p className="text-[11px] text-[#717784]">
@@ -134,24 +140,36 @@ export default function ManagedProjectCard({
         </p>
 
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => onReview?.(project)}
-            disabled={!onReview}
-            className="h-8 rounded bg-[#F0EDED] px-4 text-xs font-medium text-[#1C1B1B] transition hover:bg-[#E5E2E1] disabled:cursor-not-allowed disabled:opacity-50"
+          <Link
+            href={`/projek-saya/${project.id}/pengajuan`}
+            onClick={
+              onReview
+                ? (event) => {
+                    event.preventDefault();
+                    onReview(project);
+                  }
+                : undefined
+            }
+            className="inline-flex h-8 items-center rounded bg-[#F0EDED] px-4 text-xs font-medium text-[#1C1B1B] transition hover:bg-[#E5E2E1] disabled:cursor-not-allowed disabled:opacity-50"
           >
             Kelola Pengajuan
-          </button>
+          </Link>
 
-          <button
-            type="button"
-            onClick={() => onManage?.(project)}
-            disabled={!onManage}
+          <Link
+            href={`/projek-saya/${project.id}`}
+            onClick={
+              onManage
+                ? (event) => {
+                    event.preventDefault();
+                    onManage(project);
+                  }
+                : undefined
+            }
             className="inline-flex h-8 items-center gap-1.5 rounded bg-[#005DA9] px-4 text-xs font-medium text-white transition hover:bg-[#004B89] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Dashboard Lead
+            Buka Ringkasan Lead
             <ArrowRight size={13} aria-hidden="true" />
-          </button>
+          </Link>
         </div>
       </div>
     </article>
