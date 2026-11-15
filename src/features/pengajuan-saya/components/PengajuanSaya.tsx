@@ -3,6 +3,7 @@
 import { Compass, Info, Menu, Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import ProfileLink from "@/shared/components/ProfileLink";
 import ProjectSidebar from "@/shared/components/ProjectSidebar";
 import { applications as sampleApplications } from "../data/applications";
 import type { Application } from "../types/application";
@@ -61,13 +62,7 @@ export default function PengajuanSaya() {
             >
               <Plus size={14} /> Buat
             </Link>
-            <span
-              role="img"
-              aria-label="Akun Nadia"
-              className="flex size-8 items-center justify-center rounded-full bg-[#D4E3FF] text-xs font-semibold"
-            >
-              N
-            </span>
+            <ProfileLink />
           </div>
         </header>
         <main className="mx-auto max-w-[1280px] px-5 pb-10 pt-5 sm:px-6">

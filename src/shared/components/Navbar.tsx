@@ -57,6 +57,12 @@ export default function Navbar() {
 
         <div className="hidden items-center justify-end gap-6 lg:flex">
           <Link
+            href="/profile"
+            className={`text-sm hover:text-primary-blue ${focusStyles}`}
+          >
+            Profil Saya
+          </Link>
+          <Link
             href="/login"
             className={`text-sm hover:text-primary-blue ${focusStyles}`}
           >
@@ -104,6 +110,13 @@ export default function Navbar() {
             </li>
           ))}
         </ul>
+        <Link
+          href="/profile"
+          onClick={() => setMenuOpen(false)}
+          className={`mb-3 block rounded-lg bg-secondary-bg px-4 py-3 text-center text-sm ${focusStyles}`}
+        >
+          Profil Saya
+        </Link>
         <div className="grid grid-cols-2 gap-3 border-t border-black/10 pt-4 text-center text-sm font-medium">
           <Link
             href="/login"

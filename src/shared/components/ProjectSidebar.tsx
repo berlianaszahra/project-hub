@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ProfileLink from "./ProfileLink";
 
 type ProjectSidebarProps = {
   open: boolean;
@@ -106,19 +107,11 @@ export default function ProjectSidebar({
 
         {/* User Profile */}
         <div className="border-t border-[#EAE7E7] p-4">
-          <div className="flex items-center gap-3 rounded-lg px-2 py-2">
-            {/* Avatar */}
-            <div className="flex size-9 items-center justify-center rounded-full bg-[#D4E3FF] text-sm font-semibold text-[#001C39]">
-              N
-            </div>
-
-            {/* User Information */}
-            <div>
-              <p className="text-sm font-medium text-[#1C1B1B]">Nadia</p>
-
-              <p className="text-xs text-[#717784]">Frontend Member</p>
-            </div>
-          </div>
+          <ProfileLink
+            showDetails
+            subtitle="Frontend Member"
+            onNavigate={onClose}
+          />
         </div>
       </aside>
     </>

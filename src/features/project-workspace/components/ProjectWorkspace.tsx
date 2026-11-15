@@ -13,6 +13,7 @@ import {
   type SelectionDecision,
   selectionSnapshotSchema,
 } from "@/features/project-selection/schemas/selection.schema";
+import ProfileLink from "@/shared/components/ProfileLink";
 import {
   type LeadWorkspace,
   type Workspace,
@@ -125,15 +126,7 @@ export default function ProjectWorkspace({
             BCC ProjectHub
           </Link>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="flex size-8 items-center justify-center rounded-full bg-[#005DA9] text-xs text-white">
-            N
-          </span>
-          <div>
-            <p className="text-xs">Nadia</p>
-            <p className="text-[10px] text-[#717784]">{workspace.role}</p>
-          </div>
-        </div>
+        <ProfileLink showDetails subtitle={workspace.role} />
       </header>
       <WorkspaceSidebar
         workspace={workspace}
